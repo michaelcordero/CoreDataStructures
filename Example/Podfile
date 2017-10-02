@@ -1,0 +1,16 @@
+#Platform
+platform :ios, '11.0'
+
+#Frameworks
+use_frameworks!
+
+#Targets
+target 'CoreDataStructures_Example' do
+  pod 'CoreDataStructures', :path => '../'
+
+  target 'CoreDataStructures_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
