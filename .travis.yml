@@ -1,3 +1,4 @@
+osx_image: xcode8.3
 language: objective-c
 xcode_workspace: Example/CoreDataStructures.xcworkspace # path to your xcodeproj folder
 xcode_scheme: CoreDataStructures-Example
