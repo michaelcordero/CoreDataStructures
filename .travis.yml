@@ -1,4 +1,4 @@
 language: objective-c
 script:
   - xctool -workspace Example/CoreDataStructures.xcworkspace -scheme CoreDataStructures-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
-  - xctool test -workspace Example/CoreDataStructures.xcworkspace -scheme Tests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+  - xctool test -workspace Example/CoreDataStructures.xcworkspace -scheme CoreDataStructures-Example-Tests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
