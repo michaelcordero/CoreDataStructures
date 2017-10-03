@@ -1,6 +1,5 @@
-osx_image: xcode9
 xcode_sdk: iphonesimulator11.0
 language: objective-c
 script:
   - xctool -workspace Example/CoreDataStructures.xcworkspace -scheme CoreDataStructures-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
-  - xctool test -workspace Example/CoreDataStructures.xcworkspace -scheme CoreDataStructures-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
+  - xctool test -workspace Example/CoreDataStructures.xcworkspace -scheme CoreDataStructures-Example/Tests -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO
