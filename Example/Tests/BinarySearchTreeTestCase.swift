@@ -98,7 +98,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         oldValues.sort()
         print("Updated values: \(tree.values())")
         //Make sure we retained old values
-        XCTAssertEqual(oldValues, tree.values())
+        XCTAssertEqual(oldValues, tree.values().sorted())
         XCTAssertNotEqual(oldRoot, tree.root)
         XCTAssertTrue(tree.root?.value == newRoot.value)
     }

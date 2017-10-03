@@ -133,13 +133,13 @@ open class BinarySearchTree<T: Comparable> {
         }
     }
     
-    /* Ensures old values are retained. */
+    /* Ensures old values are retained. Inserting root first. */
     private func resetRoot(_ rootValue: T) {
         if !table.isEmpty {
-            let copyTable: [T] = table
+            let oldValues: [T] = table
             table = [T]()
             table.append(rootValue)
-            table.append(contentsOf: copyTable)
+            oldValues.forEach({try! insert($0)})
         } else {
             table.append(rootValue)
         }
@@ -166,7 +166,6 @@ open class BinarySearchTree<T: Comparable> {
     }
     
     public func values() -> [T] {
-        table = table.sorted()
         return self.table
     }
     
