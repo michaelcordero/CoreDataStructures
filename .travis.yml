@@ -6,6 +6,6 @@ before_install:
 - gem install cocoapods # Since Travis is not always on latest version
 - pod install --project-directory=Example
 script:
-- set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/CoreDataStructures.xcworkspace -scheme CoreDataStructures-Example -sdk iphonesimulator ONLY_ACTIVE_ARCH=NO | xcpretty
+- set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/CoreDataStructures.xcworkspace -scheme CoreDataStructures-Example -destination 'platform=iOS Simulator,name=iPhone 8,OS=11.0' ONLY_ACTIVE_ARCH=NO | xcpretty --color
 - pod lib lint
 
