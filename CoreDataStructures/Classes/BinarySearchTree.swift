@@ -113,14 +113,14 @@ open class BinarySearchTree<T: Comparable> {
         return nil
     }
     
-    private func append(node: Node<T>, presentNode: Node<T>?) -> Void {
+    private func insert(node: Node<T>, presentNode: Node<T>?) -> Void {
         if node.value! < (presentNode?.value!)! {
             if(presentNode?.left == nil){
                 presentNode?.left = node
                 node.parent = presentNode
                 table.append(node.value!)
             } else {
-                append(node: node, presentNode: presentNode?.left)
+                insert(node: node, presentNode: presentNode?.left)
             }
         } else if node.value! > (presentNode?.value!)! {
             if(presentNode?.right == nil) {
@@ -128,7 +128,7 @@ open class BinarySearchTree<T: Comparable> {
                 node.parent = presentNode
                 table.append(node.value!)
             } else {
-                append(node: node, presentNode: presentNode?.right)
+                insert(node: node, presentNode: presentNode?.right)
             }
         }
     }
@@ -139,10 +139,18 @@ open class BinarySearchTree<T: Comparable> {
             let oldValues: [T] = table
             table = [T]()
             table.append(rootValue)
-            oldValues.forEach({try! insert($0)})
+            oldValues.forEach({try! put($0)})
         } else {
             table.append(rootValue)
         }
+    }
+    
+    private func maximum(_ presentNode: Node<T>) -> Node<T>? {
+        return presentNode.right == nil ? presentNode : maximum(presentNode.right!)
+    }
+    
+    private func minimum(_ presentNode: Node<T>) -> Node<T>? {
+        return presentNode.left == nil ? presentNode : minimum(presentNode.left!)
     }
     
     // MARK: - Public API
@@ -151,11 +159,11 @@ open class BinarySearchTree<T: Comparable> {
         return search(indexNode: root, value: value)
     }
     
-    public func insert(_ value: T) throws -> Void{
+    public func put(_ value: T) throws -> Void{
         if root == nil || root?.value == nil {throw NodeError.RootNilException}
         if table.contains(value) {throw NodeError.PreExistingValue}
         let node: Node<T> = Node(value: value)
-        append(node: node, presentNode: root)
+        insert(node: node, presentNode: root)
     }
     
     public func remove(_ value: T) throws -> Node<T>?{
@@ -168,5 +176,14 @@ open class BinarySearchTree<T: Comparable> {
     public func values() -> [T] {
         return self.table
     }
+    
+    public func max() -> Node<T>? {
+        return maximum(root!)!
+    }
+    
+    public func min() -> Node<T>? {
+        return minimum(root!)!
+    }
+    
     
 }
