@@ -126,10 +126,9 @@ class BinarySearchTreeTestCase: XCTestCase {
     }
     
     func testMinWithNilRoot() {
-		// TODO: fix test...
-        // tree = BinarySearchTree<Int>()
-        // let min: Int? = (tree.min()?.value!)!
-        // XCTAssertNil(min)
+         tree = BinarySearchTree<Int>()
+         let min: Int? = tree.min()?.value ?? nil
+         XCTAssertNil(min)
     }
     
     func testPerformanceExample() {
