@@ -7,9 +7,8 @@
 
 ## Overview
 
-CoreDataStructures is library of fundamental data structures written in Swift 4.0.
+CoreDataStructures is library of fundamental data structures written in Swift 4.0, therefore xcode 9.0+ is required to build this project.
 Actual components can be found in CoreDataStructures/CoreDataStructures/Classes/ directory.
-Travis build is failing due to .travis.yml being broken as of OCT 4, 2017, will fix ASAP.
 
 ## Usage
 
