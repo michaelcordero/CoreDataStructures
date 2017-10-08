@@ -10,7 +10,7 @@ import Foundation
 open class BinarySearchTree<T: Comparable> {
     
     // MARK: - Properties
-    private var table: [T] = [T]() {didSet {size = table.count}}  //updates size property whenever element is added
+    private var table: [T] = [T]() {didSet {size = table.count}}
     var root: Node<T>? = Node<T>() {didSet {resetRoot((root?.value)!)}}
     var size: Int
     
@@ -70,9 +70,9 @@ open class BinarySearchTree<T: Comparable> {
     
     // MARK: - Error
     enum NodeError: Error {
-        case PreExistingValue// = "Node with value: already exists within BinarySearchTree!"
-        case InvalidNodeException// = "Node with value does not exist!"
-        case RootNilException //= "Root must be set before any other nodes are added!"
+        case PreExistingValue
+        case InvalidNodeException
+        case RootNilException
     }
     
     // MARK: - Private
@@ -99,9 +99,9 @@ open class BinarySearchTree<T: Comparable> {
         }
         if(indexNode?.value! == value){
             let parent: Node<T>? = indexNode?.parent!
-            indexNode?.left?.parent = parent    //setting left & right children's parent to removal node's parent :(
+            indexNode?.left?.parent = parent    
             indexNode?.right?.parent = parent
-            let ix: Int = table.index(where: {$0 as! T == value})!   //This means that duplicate values should not be allowed!!
+            let ix: Int = table.index(where: {$0 as! T == value})!
             table.remove(at: ix)
             return indexNode
         }
@@ -155,10 +155,25 @@ open class BinarySearchTree<T: Comparable> {
     
     // MARK: - Public API
     
+    /**
+     Searches for the passed in value, if present returns that node.
+     
+     - Parameter value: The value to be searched for.
+     - Returns: optional node with specified value.
+     */
     public func get(_ value: T) -> Node<T>?{
         return search(indexNode: root, value: value)
     }
     
+    /**
+     Places a new node with specified value into the current BinarySearchTree.
+     
+     - Parameter value: The value of the new node.
+     - Throws:
+         - RootNilException: if the root node's value is undefined.
+         - PreExistingValue: if there is already a node with the same value.
+     
+     */
     public func put(_ value: T) throws -> Void{
         if root == nil || root?.value == nil {throw NodeError.RootNilException}
         if table.contains(value) {throw NodeError.PreExistingValue}
@@ -166,6 +181,13 @@ open class BinarySearchTree<T: Comparable> {
         insert(node: node, presentNode: root)
     }
     
+    /**
+     Removes node with specified value from the current BinarySearchTree.
+     
+     - Parameter value: The value of the node to be removed.
+     - Returns: optional node
+     - Throws: InvalidNodeException if node with specified value is undeclared within BinarySearchTree.
+     */
     public func remove(_ value: T) throws -> Node<T>?{
         guard let node: Node<T> = delete(indexNode: root, value: value) else {
             throw NodeError.InvalidNodeException
@@ -173,14 +195,29 @@ open class BinarySearchTree<T: Comparable> {
         return node
     }
     
+    /**
+     Provides quick access to the immutable array containing all of the values within the BinarySearchTree.
+     
+     - Returns: Array containing all of the values
+     */
     public func values() -> [T] {
         return self.table
     }
     
+    /**
+     Finds the node with the highest comparable value within the BinarySearchTree.
+     
+     - Returns: optional node
+     */
     public func max() -> Node<T>? {
         return maximum(root!)!
     }
     
+    /**
+     Finds the node with the lowest comparable value within the BinarySearchTree.
+     
+     - Returns: optional node
+     */
     public func min() -> Node<T>? {
         return minimum(root!)!
     }
