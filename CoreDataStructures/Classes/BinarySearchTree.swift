@@ -7,6 +7,15 @@
 
 import Foundation
 
+/**
+ Binary Search Tree
+ 
+ General purpose implementation of the Binary Search Tree invented by: P.F. Windley, A.D. Booth, A.J.T. Colin, and T.N. Hibbard
+ Usages: Hierarchial data structure.
+ Types: This implementation may contain only one type of values.
+ 
+ Binary search trees keep their keys in sorted order, so that lookup and other operations can use the principle of binary search: when looking for a key in a tree (or a place to insert a new key), they traverse the tree from root to leaf, making comparisons to keys stored in the nodes of the tree and deciding, based on the comparison, to continue searching in the left or right subtrees. On average, this means that each comparison allows the operations to skip about half of the tree, so that each lookup, insertion or deletion takes time proportional to the logarithm of the number of items stored in the tree. This is much better than the linear time required to find items by key in an (unsorted) array, but slower than the corresponding operations on hash tables. [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree)
+ */
 open class BinarySearchTree<T: Comparable> {
     
     // MARK: - Properties
@@ -15,10 +24,18 @@ open class BinarySearchTree<T: Comparable> {
     var size: Int
     
     // MARK: - Constructor(s)
+    
+    /**
+     Creates an empty BinarySearchTree.
+     */
     public init() {
         size = 0
     }
     
+    /**
+     Creates a BinarySearchTree, initializing the root node value, to the specified value.
+     The BinarySearchTree may only contain values of the same type.
+     */
     public init(rootNodeValue: T){
         root = Node(value: rootNodeValue)
         table.append((root?.value!)!)
@@ -26,6 +43,12 @@ open class BinarySearchTree<T: Comparable> {
     }
     
     // MARK: - Node Class
+    
+    /**
+     Inner node class that lets the Binary Search Tree perform it's operations.
+     Each value stored within the Binary Search Tree is subsequently stored in a node.
+     The nodes hold references to sibling nodes, and parent node as well.
+     */
     open class Node<T: Comparable>:Equatable  {
         var value: T?
         var left: Node<T>?
@@ -69,6 +92,11 @@ open class BinarySearchTree<T: Comparable> {
     }
     
     // MARK: - Error
+    
+    /**
+     Custom error enum to notify users what went wrong.
+     
+     */
     enum NodeError: Error {
         case PreExistingValue
         case InvalidNodeException
@@ -76,23 +104,39 @@ open class BinarySearchTree<T: Comparable> {
     }
     
     // MARK: - Private
-    private func search<T,U>(indexNode: Node<T>?, value: U) -> Node<T>? {
-        let compare: T? = value as? T
+    
+    /**
+     Recursively searches the current BinarySearchTree for the specified value.
+     
+     - Parameters:
+         - indexNode: represents the currently indexed node when searching. public methods pass in the root node as the starting point.
+         - value: the value to be searched for
+     - Returns: optional node if value is stored within the Binary Search Tree, nil if not.
+     */
+    private func search<T>(indexNode: Node<T>?, value: T) -> Node<T>? {
         
         if(indexNode == nil){
             return nil
         }
-        if(indexNode?.value! == compare!){
+        if(indexNode?.value! == value){
             return indexNode
         }
-        if(compare! < (indexNode?.value!)!) {
+        if(value < (indexNode?.value!)!) {
             return search(indexNode: indexNode?.left, value: value)
-        } else if(compare! > (indexNode?.value!)!){
+        } else if(value > (indexNode?.value!)!){
             return search(indexNode: indexNode?.right, value: value)
         }
         return nil
     }
     
+    /**
+     Recursively searches the current BinarySearchTree for the specified value. If found it is removed from the BinarySearchTree, and returned to the caller.
+     
+     - Parameters:
+         - indexNode: represents the currently indexed node when searching. public methods pass in the root node as the starting point.
+         - value: the value to be searched for and removed.
+     - Returns: optional node if value is stored within the Binary Search Tree, nil if not.
+     */
     private func delete<T>(indexNode: Node<T>?, value: T) -> Node<T>?{
         if(indexNode == nil){
             return nil
@@ -113,6 +157,14 @@ open class BinarySearchTree<T: Comparable> {
         return nil
     }
     
+    /**
+     Recursively searches the current BinarySearchTree for the next available leaf, closest to it's comparable value.
+     
+     - Parameters:
+         - presentNode: represents the currently indexed node when searching. public methods pass in the root node as the starting point.
+         - value: The value to be searched for.
+     - Returns: Void
+     */
     private func insert(node: Node<T>, presentNode: Node<T>?) -> Void {
         if node.value! < (presentNode?.value!)! {
             if(presentNode?.left == nil){
@@ -133,8 +185,14 @@ open class BinarySearchTree<T: Comparable> {
         }
     }
     
-    /* Ensures old values are retained. Inserting root first. */
-    private func resetRoot(_ rootValue: T) {
+    /**
+     Ensures old values are retained. Inserting root first.
+     
+     - Parameters:
+         - rootValue: new root value
+     - Returns: Void
+     */
+    private func resetRoot(_ rootValue: T) -> Void{
         if !table.isEmpty {
             let oldValues: [T] = table
             table = [T]()
@@ -145,10 +203,24 @@ open class BinarySearchTree<T: Comparable> {
         }
     }
     
-    private func maximum(_ presentNode: Node<T>) -> Node<T>? {
-        return presentNode.right == nil ? presentNode : maximum(presentNode.right!)
+    /**
+     Recursively searches the current BinarySearchTree node containing the highest comparable value.
+     
+     - Parameters:
+         - indexNode: represents the currently indexed node when searching. public methods pass in the root node as the starting point.
+     - Returns: optional node
+     */
+    private func maximum(_ indexNode: Node<T>) -> Node<T>? {
+        return indexNode.right == nil ? indexNode : maximum(indexNode.right!)
     }
     
+    /**
+     Recursively searches the current BinarySearchTree node containing the lowest comparable value.
+     
+     - Parameters:
+         - indexNode: represents the currently indexed node when searching. public methods pass in the root node as the starting point.
+     - Returns: optional node
+     */
     private func minimum(_ presentNode: Node<T>) -> Node<T>? {
         return presentNode.left == nil ? presentNode : minimum(presentNode.left!)
     }
@@ -158,7 +230,8 @@ open class BinarySearchTree<T: Comparable> {
     /**
      Searches for the passed in value, if present returns that node.
      
-     - Parameter value: The value to be searched for.
+     - Parameters:
+         - value: The value to be searched for.
      - Returns: optional node with specified value.
      */
     public func get(_ value: T) -> Node<T>?{
@@ -168,7 +241,8 @@ open class BinarySearchTree<T: Comparable> {
     /**
      Places a new node with specified value into the current BinarySearchTree.
      
-     - Parameter value: The value of the new node.
+     - Parameters:
+         - value: The value of the new node.
      - Throws:
          - RootNilException: if the root node's value is undefined.
          - PreExistingValue: if there is already a node with the same value.
@@ -184,7 +258,8 @@ open class BinarySearchTree<T: Comparable> {
     /**
      Removes node with specified value from the current BinarySearchTree.
      
-     - Parameter value: The value of the node to be removed.
+     - Parameters:
+         - value: The value of the node to be removed.
      - Returns: optional node
      - Throws: InvalidNodeException if node with specified value is undeclared within BinarySearchTree.
      */
