@@ -131,6 +131,23 @@ class BinarySearchTreeTestCase: XCTestCase {
          XCTAssertNil(min)
     }
     
+    func testHeight() {
+        try! tree.put(7)
+        try! tree.put(21)
+        try! tree.put(22)
+        try! tree.put(23)
+        XCTAssertEqual(tree.height(), 6)
+    }
+    
+    func testDepth() {
+        XCTAssertEqual(tree.depth((tree.root?.value)!), 0)
+        XCTAssertEqual(tree.depth(6), 3)
+    }
+    
+    func testNodeHeight() {
+        XCTAssertEqual(tree.nodeheight(6), 1)
+    }
+    
     func testPerformanceExample() {
         // This is an example of a performance test case.
 //        self.measure {

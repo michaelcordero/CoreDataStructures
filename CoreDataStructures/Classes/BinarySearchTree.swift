@@ -14,7 +14,13 @@ import Foundation
  Usages: Hierarchial data structure.
  Types: This implementation may contain only one type of values.
  
- Binary search trees keep their keys in sorted order, so that lookup and other operations can use the principle of binary search: when looking for a key in a tree (or a place to insert a new key), they traverse the tree from root to leaf, making comparisons to keys stored in the nodes of the tree and deciding, based on the comparison, to continue searching in the left or right subtrees. On average, this means that each comparison allows the operations to skip about half of the tree, so that each lookup, insertion or deletion takes time proportional to the logarithm of the number of items stored in the tree. This is much better than the linear time required to find items by key in an (unsorted) array, but slower than the corresponding operations on hash tables. [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree)
+ Binary search trees keep their keys in sorted order, so that lookup and other operations can use the principle of binary search:
+ when looking for a key in a tree (or a place to insert a new key), they traverse the tree from root to leaf, making comparisons
+ to keys stored in the nodes of the tree and deciding, based on the comparison, to continue searching in the left or right subtrees.
+ On average, this means that each comparison allows the operations to skip about half of the tree, so that each lookup, insertion
+ or deletion takes time proportional to the logarithm of the number of items stored in the tree. This is much better than the linear
+ time required to find items by key in an (unsorted) array, but slower than the corresponding operations on hash tables.
+ [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree)
  */
 open class BinarySearchTree<T: Comparable> {
     
@@ -225,6 +231,38 @@ open class BinarySearchTree<T: Comparable> {
         return presentNode.left == nil ? presentNode : minimum(presentNode.left!)
     }
     
+    /**
+     Recursively searches both left and right sides of binary search tree for maximum edges.
+     
+     - Parameters:
+         - indexNode: represents the currently indexed node.
+     - Returns: Int
+     */
+    private func height(_ indexNode: Node<T>?) -> Int {
+        if indexNode?.value == nil {
+            return 0
+        }
+        else {
+            return Swift.max(height(indexNode?.left) , height(indexNode?.right)) + 1
+        }
+    }
+    
+    /**
+     Calculates the depth of a node, which is the distance to the root.
+     
+     - Parameters:
+         - indexNode: represents the currently indexed node.
+     - Returns: Int
+     */
+    private func depth(_ indexNode: Node<T>?, _ edges: inout Int) -> Int{
+        if indexNode?.parent == nil {
+            return edges
+        }  else {
+            edges += 1
+            return depth(indexNode?.parent!, &edges)
+        }
+    }
+    
     // MARK: - Public API
     
     /**
@@ -295,6 +333,36 @@ open class BinarySearchTree<T: Comparable> {
      */
     public func min() -> Node<T>? {
         return minimum(root!)!
+    }
+    
+    /**
+     Finds the height of the tree, which is the root's distance to the lowest leaf.
+     
+     - Returns: Int
+     */
+    public func height() -> Int {
+        return height(root!)
+    }
+    
+    /**
+     Finds the height of a given node, which is the node's distance to the lowest leaf.
+     
+     - Parameters: the node to be searched for and queried for height.
+     - Returns: Int
+     */
+    public func nodeheight(_ value: T) -> Int {
+        return height(self.get(value))
+    }
+    
+    /**
+     Finds the depth of a node, which is the distance to the root.
+     
+     - Parameters: the node to be queried for depth.
+     - Returns: Int
+     */
+    public func depth(_ value: T) -> Int {
+        var edges: Int = 0
+        return depth(self.get(value), &edges )
     }
     
     
