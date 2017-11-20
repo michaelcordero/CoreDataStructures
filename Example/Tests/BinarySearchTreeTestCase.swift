@@ -135,9 +135,7 @@ class BinarySearchTreeTestCase: XCTestCase {
     
     func testHeight() {
         try! tree.put(7)
-        try! tree.put(21)
-        try! tree.put(22)
-        try! tree.put(23)
+        try! tree.put(8)
         XCTAssertEqual(tree.height(), 6)
     }
     

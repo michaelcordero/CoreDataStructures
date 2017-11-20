@@ -374,6 +374,7 @@ open class BinarySearchTree<T: Comparable> {
         var value = Float(table.count / 2)
         value.round(.up)
         let index = Int(value)
+        table.sort()
         root = Node(value: table[index])
     }
 
