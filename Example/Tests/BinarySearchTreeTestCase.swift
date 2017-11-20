@@ -20,13 +20,13 @@ class BinarySearchTreeTestCase: XCTestCase {
         // Put setup code here. This method is called before the invocation of each test method in the class.
         try! tree.put(3)
         try! tree.put(5)
+        try! tree.put(21)
         try! tree.put(1)
         try! tree.put(6)
+        try! tree.put(22)
         try! tree.put(14)
         try! tree.put(13)
         try! tree.put(20)
-        try! tree.put(21)
-        try! tree.put(22)
     }
     
     override func tearDown() {
@@ -155,7 +155,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         tree.balance()
         let leftHeight: Int = tree.nodeheight((tree.root?.left?.value)!)
         let rightHeight: Int = tree.nodeheight((tree.root?.right?.value)!)
-        XCTAssertTrue(leftHeight - rightHeight <= 1)
+        XCTAssertTrue(abs(leftHeight - rightHeight) <= 1)
     }
     
     func testPerformanceExample() {
