@@ -25,6 +25,8 @@ class BinarySearchTreeTestCase: XCTestCase {
         try! tree.put(14)
         try! tree.put(13)
         try! tree.put(20)
+        try! tree.put(21)
+        try! tree.put(22)
     }
     
     override func tearDown() {
@@ -146,6 +148,14 @@ class BinarySearchTreeTestCase: XCTestCase {
     
     func testNodeHeight() {
         XCTAssertEqual(tree.nodeheight(6), 1)
+    }
+    
+    func testBalance() {
+        try! tree.put(11)
+        tree.balance()
+        let leftHeight: Int = tree.nodeheight((tree.root?.left?.value)!)
+        let rightHeight: Int = tree.nodeheight((tree.root?.right?.value)!)
+        XCTAssertTrue(leftHeight - rightHeight <= 1)
     }
     
     func testPerformanceExample() {

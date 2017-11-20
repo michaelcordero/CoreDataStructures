@@ -200,7 +200,7 @@ open class BinarySearchTree<T: Comparable> {
      */
     private func resetRoot(_ rootValue: T) -> Void{
         if !table.isEmpty {
-            let oldValues: [T] = table
+            let oldValues: [T] = table.filter({$0 != rootValue})
             table = [T]()
             table.append(rootValue)
             oldValues.forEach({try! put($0)})
@@ -365,5 +365,16 @@ open class BinarySearchTree<T: Comparable> {
         return depth(self.get(value), &edges )
     }
     
-    
+    /**
+     The purpose of this function is to restore the BST to O(log n) status.
+     The definition of balanced is: The heights of the two child subtrees of any node differ by at most one.
+     [Wikipedia](https://en.wikipedia.org/wiki/AVL_tree)
+     */
+    public func balance() -> Void {
+        var value = Float(table.count / 2)
+        value.round(.up)
+        let index = Int(value)
+        root = Node(value: table[index])
+    }
+
 }
