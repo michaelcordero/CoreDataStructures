@@ -7,7 +7,7 @@
 
 ## Overview
 
-CoreDataStructures is library of fundamental data structures written in Swift 4.0, therefore xcode 9.0+ is required to build this project.
+CoreDataStructures is library of fundamental data structures written in Swift 4.2, therefore xcode 10.0+ is required to build this project.
 Actual components can be found in CoreDataStructures/CoreDataStructures/Classes/ directory.
 
 ## Usage
@@ -22,6 +22,7 @@ class WelcomeViewController: UIViewController {
     var xStack: Stack<Double> = Stack<Double>()
     var xBST: BinarySearchTree<Int> = BinarySearchTree<Int>()
     var xQueue: Queue<Float> = Queue<Float>()
+    var xLinkedList: LinkedList<Double> = LinkedList<Double>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -42,8 +43,8 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 
 ## Requirements
 
-* iOS 11.0
-* Swift 4.0
+* iOS 12.0
+* Swift 4.2
 
 ## Installation
 

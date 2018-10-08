@@ -14,6 +14,7 @@ class WelcomeViewController: UIViewController {
     var xStack: Stack<Double> = Stack<Double>()
     var xBST: BinarySearchTree<Int> = BinarySearchTree<Int>()
     var xQueue: Queue<Float> = Queue<Float>()
+    var xLinkedList: LinkedList<Double> = LinkedList<Double>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
