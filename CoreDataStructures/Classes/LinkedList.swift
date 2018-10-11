@@ -109,29 +109,33 @@ open class LinkedList<T: Equatable> : List {
         }
     }
     
-    private func getFirst() -> T? {
-        return head?.value
+    private func getFirst() -> Node<T>? {
+        return head
     }
     
-    private func getLast() -> T? {
-        return tail?.value
+    private func getLast() -> Node<T>? {
+        return tail
     }
     
+    /**
+     - Returns: The specified node if present
+     - Complexity: O(n/2)
+    */
     private func find(_ index: Int ) -> Node<T> {
         // start at the beggining
         if index < ( count >> 1 ) {     // dividing number of elements (count) by 2 which yields the middle value
             var position: Int = 0
             var current: Node<T> = head!
-            while(position != index){
+            while(position < index){
                 current = current.next ?? current
                 position += 1
             }
             return current
         } else {
             // start at the end and work way backwards
-            var position: Int = count
+            var position: Int = count - 1
             var current: Node<T> = tail!
-            while(position != index){
+            while(position > index){
                 current = current.previous ?? current
                 position -= 1
             }
@@ -195,6 +199,17 @@ open class LinkedList<T: Equatable> : List {
         } else {
             return nil
         }
+    }
+    
+    func all() -> [T?] {
+        var allValues: [T?] = [T?]()
+        var current: Node<T>? = head ?? nil
+        if current == nil { return allValues }
+        repeat {
+            allValues.append(current!.value)
+            current = current!.next ?? nil
+        } while current != nil
+        return allValues
     }
     
     func contains(_ element: T) -> Bool {

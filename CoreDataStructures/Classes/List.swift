@@ -14,6 +14,7 @@ protocol List {
     func remove(_ element: T) -> T? // return the removed element
     func get(_ index: Int ) -> T?    // return the element at the specified index
     func set(_ index: Int, value: T) -> T?   // sets a new value at specified index, returns old value
+    func all() -> [T?]      // return all the list's values in an array
     func contains(_ element: T) -> Bool
     func indexOf(_ element: T) -> Int?
     func clear() -> Void

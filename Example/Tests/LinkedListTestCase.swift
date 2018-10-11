@@ -26,14 +26,33 @@ class LinkedListTestCase: XCTestCase {
     }
     
     func testAdd() {
-        XCTAssert(linked_list!.add(5))
+        XCTAssert(linked_list!.add(1))
+        XCTAssert(linked_list!.add(0))
+        XCTAssert(linked_list!.add(7))
+        XCTAssert(linked_list!.add(9))
     }
     
     func testGet() {
-        let expected: Int = 5
-        let _ = linked_list?.add( expected )
-        let result: Int = (linked_list?.get(0))!
-        XCTAssertEqual(result, expected)
+        let expected: [Int] = [8,2,1,4,5,6,3,9]
+        expected.forEach({ let _ = linked_list?.add($0)})
+        var result: [Int] = []
+        for index in 0...expected.count-1 {
+            result.append((linked_list?.get(index))!)
+        }
+        print("Expected: \(expected). Actual Result: \(result)")
+    }
+    
+    func testGetEmpty() {
+        let expected: [Int] = []
+        expected.forEach({ let _ = linked_list?.add($0)})
+        let result: [Int] = (linked_list?.all().map({$0!}))!
+        print("Expected: \(expected). Actual Result: \(result)")
+    }
+    
+    func testAll(){
+        let expected: [Int] = [1,2,3,4,5,6,7,8,9]
+        expected.forEach({ let _ = linked_list?.add($0)})
+        let result: [Int] = (linked_list?.all())!.map({$0!})
         print("Expected: \(expected). Actual Result: \(result)")
     }
     
