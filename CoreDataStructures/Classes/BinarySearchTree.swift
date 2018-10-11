@@ -254,7 +254,7 @@ open class BinarySearchTree<T: Comparable> {
          - indexNode: represents the currently indexed node.
      - Returns: Int
      */
-    private func depth(_ indexNode: Node<T>?, _ edges: inout Int) -> Int{
+    private func depth(_ indexNode: Node<T>?, _ edges: inout Int) -> Int {
         if indexNode?.parent == nil {
             return edges
         }  else {
@@ -272,7 +272,7 @@ open class BinarySearchTree<T: Comparable> {
          - value: The value to be searched for.
      - Returns: optional node with specified value.
      */
-    public func get(_ value: T) -> Node<T>?{
+    public func get(_ value: T) -> Node<T>? {
         return search(indexNode: root, value: value)
     }
     
@@ -286,7 +286,7 @@ open class BinarySearchTree<T: Comparable> {
          - PreExistingValue: if there is already a node with the same value.
      
      */
-    public func put(_ value: T) throws -> Void{
+    public func put(_ value: T) throws -> Void {
         if root == nil || root?.value == nil {throw NodeError.RootNilException}
         if table.contains(value) {throw NodeError.PreExistingValue}
         let node: Node<T> = Node(value: value)
@@ -301,7 +301,7 @@ open class BinarySearchTree<T: Comparable> {
      - Returns: optional node
      - Throws: InvalidNodeException if node with specified value is undeclared within BinarySearchTree.
      */
-    public func remove(_ value: T) throws -> Node<T>?{
+    public func remove(_ value: T) throws -> Node<T>? {
         guard let node: Node<T> = delete(indexNode: root, value: value) else {
             throw NodeError.InvalidNodeException
         }

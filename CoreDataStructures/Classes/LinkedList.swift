@@ -123,7 +123,7 @@ open class LinkedList<T: Equatable> : List {
             var position: Int = 0
             var current: Node<T> = head!
             while(position != index){
-                current = current.next!
+                current = current.next ?? current
                 position += 1
             }
             return current
@@ -132,7 +132,7 @@ open class LinkedList<T: Equatable> : List {
             var position: Int = count
             var current: Node<T> = tail!
             while(position != index){
-                current = current.previous!
+                current = current.previous ?? current
                 position -= 1
             }
             return current

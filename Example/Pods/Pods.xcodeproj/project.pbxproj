@@ -16,6 +16,9 @@
 		73CC4E1D216AD94F00E7DA2C /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CC4E1A216AD94F00E7DA2C /* LinkedList.swift */; };
 		73CC4E1E216AD94F00E7DA2C /* List.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CC4E1B216AD94F00E7DA2C /* List.swift */; };
 		73CC4E1F216AD94F00E7DA2C /* Map.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CC4E1C216AD94F00E7DA2C /* Map.swift */; };
+		73CC4E27216C681D00E7DA2C /* Tree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CC4E26216C681D00E7DA2C /* Tree.swift */; };
+		73CC4E29216CEB2C00E7DA2C /* AVLTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CC4E28216CEB2C00E7DA2C /* AVLTree.swift */; };
+		73CC4E2B216ECF2A00E7DA2C /* BinaryTree.swift in Sources */ = {isa = PBXBuildFile; fileRef = 73CC4E2A216ECF2A00E7DA2C /* BinaryTree.swift */; };
 		743841A7911CDBC25186308B1B9AC951 /* Pods-CoreDataStructures_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = BB6C7725FE3433294F5FC1E6085FAD32 /* Pods-CoreDataStructures_Tests-dummy.m */; };
 		79C4F94D70C6A538A03B87C4AAAF7F97 /* Pods-CoreDataStructures_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B2415F1009459E159D6FFFB0E5255EEE /* Pods-CoreDataStructures_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9AF81913ED44AEDDEFC9A607B1C0D8AA /* Pods-CoreDataStructures_Tests-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 3B3AC075CBF112A4CF3EA46907E57E13 /* Pods-CoreDataStructures_Tests-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -62,9 +65,12 @@
 		706F79110921AC4574DC60A3B1C0E325 /* Pods-CoreDataStructures_Example-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-CoreDataStructures_Example-acknowledgements.plist"; sourceTree = "<group>"; };
 		7136DF758843A0893C413848DEA91021 /* Pods-CoreDataStructures_Tests-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-CoreDataStructures_Tests-acknowledgements.markdown"; sourceTree = "<group>"; };
 		725FF9DD14E012415C6EEA1A85BA4DE3 /* Pods-CoreDataStructures_Example-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-CoreDataStructures_Example-resources.sh"; sourceTree = "<group>"; };
-		73CC4E1A216AD94F00E7DA2C /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
-		73CC4E1B216AD94F00E7DA2C /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = List.swift; sourceTree = "<group>"; };
-		73CC4E1C216AD94F00E7DA2C /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Map.swift; sourceTree = "<group>"; };
+		73CC4E1A216AD94F00E7DA2C /* LinkedList.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LinkedList.swift; path = CoreDataStructures/Classes/LinkedList.swift; sourceTree = "<group>"; };
+		73CC4E1B216AD94F00E7DA2C /* List.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = List.swift; path = CoreDataStructures/Classes/List.swift; sourceTree = "<group>"; };
+		73CC4E1C216AD94F00E7DA2C /* Map.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Map.swift; path = CoreDataStructures/Classes/Map.swift; sourceTree = "<group>"; };
+		73CC4E26216C681D00E7DA2C /* Tree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tree.swift; path = CoreDataStructures/Classes/Tree.swift; sourceTree = "<group>"; };
+		73CC4E28216CEB2C00E7DA2C /* AVLTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AVLTree.swift; path = CoreDataStructures/Classes/AVLTree.swift; sourceTree = "<group>"; };
+		73CC4E2A216ECF2A00E7DA2C /* BinaryTree.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = BinaryTree.swift; path = CoreDataStructures/Classes/BinaryTree.swift; sourceTree = "<group>"; };
 		7412B74C2E46D2BDF9B96642CA471481 /* CoreDataStructures-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "CoreDataStructures-umbrella.h"; sourceTree = "<group>"; };
 		7A1052BAF86AAE118B8B9ADF017B0C4C /* Pods-CoreDataStructures_Example.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CoreDataStructures_Example.debug.xcconfig"; sourceTree = "<group>"; };
 		7D804E1F944AA3543A1E708B8633BECC /* Pods-CoreDataStructures_Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-CoreDataStructures_Tests.debug.xcconfig"; sourceTree = "<group>"; };
@@ -123,10 +129,13 @@
 		39FE0B5465F16AFBAF2352263AAD6587 /* CoreDataStructures */ = {
 			isa = PBXGroup;
 			children = (
-				73CC4E1A216AD94F00E7DA2C /* LinkedList.swift */,
-				73CC4E1B216AD94F00E7DA2C /* List.swift */,
-				73CC4E1C216AD94F00E7DA2C /* Map.swift */,
+				73CC4E26216C681D00E7DA2C /* Tree.swift */,
+				73CC4E2A216ECF2A00E7DA2C /* BinaryTree.swift */,
 				27B569B6A880628E74676ADA1FB72BEC /* BinarySearchTree.swift */,
+				73CC4E28216CEB2C00E7DA2C /* AVLTree.swift */,
+				73CC4E1B216AD94F00E7DA2C /* List.swift */,
+				73CC4E1A216AD94F00E7DA2C /* LinkedList.swift */,
+				73CC4E1C216AD94F00E7DA2C /* Map.swift */,
 				B6F48C3612EDA4136DFCB65D1F7C6F01 /* Queue.swift */,
 				C19ECFE190C104D4688AAE65078F0089 /* Stack.swift */,
 				DA5AEA93DE5842F79935C321040D2912 /* Pod */,
@@ -366,11 +375,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				73CC4E29216CEB2C00E7DA2C /* AVLTree.swift in Sources */,
 				F6E80BA9EE8B159B2EBD1F20616A7DA3 /* BinarySearchTree.swift in Sources */,
+				73CC4E2B216ECF2A00E7DA2C /* BinaryTree.swift in Sources */,
 				6FA7376BB9AE31F86F0443A73DA5BAD4 /* CoreDataStructures-dummy.m in Sources */,
 				73CC4E1D216AD94F00E7DA2C /* LinkedList.swift in Sources */,
 				73CC4E1F216AD94F00E7DA2C /* Map.swift in Sources */,
 				59D417C876CB0CC38C5F69A028D11535 /* Queue.swift in Sources */,
+				73CC4E27216C681D00E7DA2C /* Tree.swift in Sources */,
 				0B69034AE53EF8B8032B5738E89C15BA /* Stack.swift in Sources */,
 				73CC4E1E216AD94F00E7DA2C /* List.swift in Sources */,
 			);
