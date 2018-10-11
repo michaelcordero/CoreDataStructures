@@ -9,6 +9,7 @@ import Foundation
 
 protocol Tree {
     
+    /*common operations*/
     associatedtype T : Comparable
     func get(value: T) -> Node<T>?
     func put(value: T) -> Void
@@ -18,9 +19,11 @@ protocol Tree {
     func root() -> Node<T>?
     
     /*algorithms*/
-    func preorder(node: Node<T>, operation: (Node<T> ) -> Void ) -> Void
-    func postorder(node: Node<T>, operation: ( Node<T>) -> Void ) -> Void
-    func inorder(node: Node<T>, operation: ( Node<T>) -> Void ) -> Void
+    func depth(_ value: T) -> Int
+    func height(_ value: T) -> Int
+    func preorder(node: Node<T>, operation: ( Node<T> ) -> Void ) -> Void
+    func postorder(node: Node<T>, operation: ( Node<T> ) -> Void ) -> Void
+    func inorder(node: Node<T>, operation: ( Node<T> ) -> Void ) -> Void
 }
 
 class Node<T: Comparable>: Equatable {
@@ -59,7 +62,7 @@ class Node<T: Comparable>: Equatable {
     
     // MARK: - Protocol Conformance
     static func == (lhs: Node<T>, rhs: Node<T>) -> Bool {
-        return lhs.value == rhs.value
+        return lhs.value == rhs.value && lhs.parent == rhs.parent && lhs.left == rhs.left && lhs.right == rhs.right
     }
     
     // MARK: - Public API

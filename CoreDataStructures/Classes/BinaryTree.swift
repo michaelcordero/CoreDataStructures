@@ -15,5 +15,6 @@ import Foundation
  */
 
 protocol BinaryTree : Tree {
-    func children(node: Node<T>) -> ( left: Node<T>?, right: Node<T>? )
+    func children(parent: Node<T> ) -> ( left: Node<T>?, right: Node<T>? )
+    func sibling(node: Node<T> ) -> Node<T>?
 }
