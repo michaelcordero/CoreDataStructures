@@ -22,12 +22,13 @@ import Foundation
  time required to find items by key in an (unsorted) array, but slower than the corresponding operations on hash tables.
  [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree)
  */
-open class BinarySearchTree<T: Comparable> {
+open class BinarySearchTree<T: Comparable> : BinaryTree {
     
+
     // MARK: - Properties
-    private var table: [T] = [T]() {didSet {size = table.count}}
-    var root: Node<T>? = Node<T>() {didSet {resetRoot((root?.value)!)}}
-    var size: Int
+    private var table: [T] = [T]() {didSet {count = table.count}}
+    var root_node: Node<T>? = Node<T>() {didSet {resetRoot((root_node?.value)!)}}
+    var count: Int
     
     // MARK: - Constructor(s)
     
@@ -35,7 +36,7 @@ open class BinarySearchTree<T: Comparable> {
      Creates an empty BinarySearchTree.
      */
     public init() {
-        size = 0
+        count = 0
     }
     
     /**
@@ -43,70 +44,9 @@ open class BinarySearchTree<T: Comparable> {
      The BinarySearchTree may only contain values of the same type.
      */
     public init(rootNodeValue: T){
-        root = Node(value: rootNodeValue)
-        table.append((root?.value!)!)
-        size = 1
-    }
-    
-    // MARK: - Node Class
-    
-    /**
-     Inner node class that lets the Binary Search Tree perform it's operations.
-     Each value stored within the Binary Search Tree is subsequently stored in a node.
-     The nodes hold references to sibling nodes, and parent node as well.
-     */
-    open class Node<T: Comparable>:Equatable  {
-        var value: T?
-        var left: Node<T>?
-        var right: Node<T>?
-        var parent: Node<T>?
-        
-        
-        // MARK: - Node Constructor(s)
-        public init() {
-            self.value = nil
-            self.left = nil
-            self.right = nil
-            self.parent = nil
-        }
-        
-        public init(value: T?) {
-            self.value = value
-            self.left = nil
-            self.right = nil
-            self.parent = nil
-        }
-        public init(value: T?, left: Node<T>?, right: Node<T>?) {
-            self.value = value
-            self.left = left
-            self.right = right
-            self.parent = nil
-        }
-        
-        public init(value: T?, left: Node<T>?, right: Node<T>?, parent: Node<T>?) {
-            self.value = value
-            self.left = left
-            self.right = right
-            self.parent = parent
-        }
-        
-        // MARK: - Protocol Conformance
-        public static func == <T>(lhs: Node<T>, rhs: Node<T>) -> Bool {
-            return lhs.value == rhs.value
-        }
-        
-    }
-    
-    // MARK: - Error
-    
-    /**
-     Custom error enum to notify users what went wrong.
-     
-     */
-    enum NodeError: Error {
-        case PreExistingValue
-        case InvalidNodeException
-        case RootNilException
+        root_node = Node(value: rootNodeValue)
+        table.append((root_node?.value!)!)
+        count = 1
     }
     
     // MARK: - Private
@@ -203,7 +143,7 @@ open class BinarySearchTree<T: Comparable> {
             let oldValues: [T] = table.filter({$0 != rootValue})
             table = [T]()
             table.append(rootValue)
-            oldValues.forEach({try! put($0)})
+            oldValues.forEach({ try! put($0)})
         } else {
             table.append(rootValue)
         }
@@ -263,106 +203,145 @@ open class BinarySearchTree<T: Comparable> {
         }
     }
     
+   
+    ///  Preorder traversal of a tree, is when the root of the tree is visited first
+    ///  and then the subtrees rooted at its children are traversed recursively.
+    ///
+    /// - Parameters:
+    ///   - index_node: represents the currently indexed node.
+    ///   - operation: a function that you want to apply to the node.
+    private func preorder(_ index_node: Node<T>, operation: (Node<T>) -> Void  ) -> Void {
+        operation(index_node)
+        
+        if index_node.left != nil {
+            preorder(index_node.left!, operation: operation)
+        }
+        
+        if index_node.right != nil {
+            preorder(index_node.right!, operation: operation)
+        }
+    }
+    
+    /// Postorder traversal recursively traverses the subtrees rooted at the children of the root first,
+    /// then it visits the root.
+    ///
+    /// - Parameters:
+    ///   - index_node: represents the currently indexed node.
+    ///   - operation: a function that you want to apply to the node.
+    private func postorder(_ index_node: Node<T>, operation: (Node<T>) -> Void  ) -> Void {
+        if index_node.left != nil {
+            postorder(index_node.left!, operation: operation)
+        }
+        
+        if index_node.right != nil {
+            postorder(index_node.right!, operation: operation)
+        }
+        
+        operation(index_node)       //postorder
+    }
+    
+    
+    /// Inorder traversal visits the node between recursive traversals of it's left and right subtrees.
+    ///
+    /// - Parameters:
+    ///   - index_node: represents the currently indexed node.
+    ///   - operation: a function that you want to apply to the node.
+    private func inorder(_ index_node: Node<T>, operation: (Node<T>) -> Void  ) -> Void {
+        if index_node.left != nil {
+            inorder(index_node.left!, operation: operation)
+        }
+        
+        operation(index_node)       // inorder
+        
+        if index_node.right != nil {
+            inorder(index_node.right!, operation: operation)
+        }
+    }
+    
     // MARK: - Public API
-    
-    /**
-     Searches for the passed in value, if present returns that node.
-     
-     - Parameters:
-         - value: The value to be searched for.
-     - Returns: optional node with specified value.
-     */
-    public func get(_ value: T) -> Node<T>? {
-        return search(indexNode: root, value: value)
+    func children(parent: Node<T>) -> (left: Node<T>?, right: Node<T>?) {
+        return ( parent.left, parent.right )
     }
     
-    /**
-     Places a new node with specified value into the current BinarySearchTree.
-     
-     - Parameters:
-         - value: The value of the new node.
-     - Throws:
-         - RootNilException: if the root node's value is undefined.
-         - PreExistingValue: if there is already a node with the same value.
-     
-     */
-    public func put(_ value: T) throws -> Void {
-        if root == nil || root?.value == nil {throw NodeError.RootNilException}
-        if table.contains(value) {throw NodeError.PreExistingValue}
+    func sibling(node: Node<T>) -> Node<T>? {
+        guard let parent: Node<T> = self.get(node.value!)?.parent else { return nil }
+        return node == parent.left ? parent.right : parent.left
+    }
+    
+    func get(_ value: T) -> Node<T>? {
+        return search(indexNode: root_node, value: value)
+    }
+    
+    func set(_ node: Node<T>, value: T) throws -> T? {
+        if let _: T = self.get(value)?.value { throw TreeError.DuplicateValueError }
+        guard let operand: Node<T> = self.get( node.value! ) else { return nil }
+        let previous_value: T? = operand.value
+        operand.value = value // new value
+        return previous_value
+        
+    }
+    
+    func put(_ value: T) throws -> Void {
+        if root_node == nil || root_node?.value == nil { throw TreeError.NilRootError }
+        if table.contains(value) {throw TreeError.DuplicateValueError}
         let node: Node<T> = Node(value: value)
-        insert(node: node, presentNode: root)
+        insert(node: node, presentNode: root_node)
     }
     
-    /**
-     Removes node with specified value from the current BinarySearchTree.
-     
-     - Parameters:
-         - value: The value of the node to be removed.
-     - Returns: optional node
-     - Throws: InvalidNodeException if node with specified value is undeclared within BinarySearchTree.
-     */
-    public func remove(_ value: T) throws -> Node<T>? {
-        guard let node: Node<T> = delete(indexNode: root, value: value) else {
-            throw NodeError.InvalidNodeException
+    func remove(_ value: T) throws -> Node<T>? {
+        guard let node: Node<T> = delete(indexNode: root_node, value: value) else {
+            throw TreeError.InvalidNodeError
         }
         return node
     }
     
-    /**
-     Provides quick access to the immutable array containing all of the values within the BinarySearchTree.
-     
-     - Returns: Array containing all of the values
-     */
-    public func values() -> [T] {
-        return self.table
+    func size() -> Int {
+        return count
     }
     
-    /**
-     Finds the node with the highest comparable value within the BinarySearchTree.
-     
-     - Returns: optional node
-     */
-    public func max() -> Node<T>? {
-        return maximum(root!)!
+    func isEmpty() -> Bool {
+        return count == 0
     }
     
-    /**
-     Finds the node with the lowest comparable value within the BinarySearchTree.
-     
-     - Returns: optional node
-     */
-    public func min() -> Node<T>? {
-        return minimum(root!)!
+    func root() -> Node<T>? {
+        return root_node
     }
     
-    /**
-     Finds the height of the tree, which is the root's distance to the lowest leaf.
-     
-     - Returns: Int
-     */
-    public func height() -> Int {
-        return height(root!)
+    func max() -> Node<T>? {
+        return maximum(root_node!)
     }
     
-    /**
-     Finds the height of a given node, which is the node's distance to the lowest leaf.
-     
-     - Parameters: the node to be searched for and queried for height.
-     - Returns: Int
-     */
-    public func nodeheight(_ value: T) -> Int {
-        return height(self.get(value))
+    func min() -> Node<T>? {
+        return minimum(root_node!)
     }
     
-    /**
-     Finds the depth of a node, which is the distance to the root.
-     
-     - Parameters: the node to be queried for depth.
-     - Returns: Int
-     */
-    public func depth(_ value: T) -> Int {
+    func all() -> [Node<T>] {
+        return table.map( { Node(value: $0) } )
+    }
+    
+    func values() -> [T] {
+        return table
+    }
+    
+    func depth(_ value: T) -> Int {
         var edges: Int = 0
         return depth(self.get(value), &edges )
+    }
+    
+    func height(_ value: T) -> Int {
+        return self.height( self.get(value) )
+    }
+    
+    func preorder( operation: (Node<T>) -> Void ) {
+        preorder(root_node!, operation: operation)
+    }
+    
+    func postorder( operation: (Node<T>) -> Void ) {
+        postorder(root_node!, operation: operation)
+    }
+    
+    func inorder( operation: (Node<T>) -> Void ) {
+        inorder(root_node!, operation: operation)
     }
     
     /**
@@ -375,7 +354,6 @@ open class BinarySearchTree<T: Comparable> {
         value.round(.up)
         let index = Int(value)
         table.sort()
-        root = Node(value: table[index])
+        root_node = Node(value: table[index])
     }
-
 }

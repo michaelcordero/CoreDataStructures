@@ -11,19 +11,36 @@ protocol Tree {
     
     /*common operations*/
     associatedtype T : Comparable
-    func get(value: T) -> Node<T>?
-    func put(value: T) -> Void
-    func remove(value: T) -> Node<T>?
+    func get(_ value: T) -> Node<T>?
+    func set(_ node: Node<T>, value: T) throws -> T?
+    func put(_ value: T) throws -> Void
+    func remove(_ value: T) throws -> Node<T>?
     func size() -> Int
     func isEmpty() -> Bool
     func root() -> Node<T>?
+    func max() -> Node<T>?
+    func min() -> Node<T>?
+    func all() -> [Node<T>]
+    func values() -> [T]
     
     /*algorithms*/
     func depth(_ value: T) -> Int
     func height(_ value: T) -> Int
-    func preorder(node: Node<T>, operation: ( Node<T> ) -> Void ) -> Void
-    func postorder(node: Node<T>, operation: ( Node<T> ) -> Void ) -> Void
-    func inorder(node: Node<T>, operation: ( Node<T> ) -> Void ) -> Void
+    func preorder( operation: ( Node<T> ) -> Void ) -> Void
+    func postorder( operation: ( Node<T> ) -> Void ) -> Void
+    func inorder( operation: ( Node<T> ) -> Void ) -> Void
+}
+
+// MARK: - Error
+
+/**
+ Custom error enum to notify users what went wrong.
+ 
+ */
+enum TreeError: Error {
+    case DuplicateValueError
+    case InvalidNodeError
+    case NilRootError
 }
 
 class Node<T: Comparable>: Equatable {
