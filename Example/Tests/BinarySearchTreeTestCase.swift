@@ -91,7 +91,7 @@ class BinarySearchTreeTestCase: XCTestCase {
     func testSetRootAndInsert() {
         let anotherTree: BinarySearchTree<Int> = BinarySearchTree<Int>()
         print("Current values: \(anotherTree.values())")
-        anotherTree.root_node = Node<Int>(value: 10)
+        anotherTree.root = Node<Int>(value: 10)
         print("Updated values: \(anotherTree.values())")
         XCTAssertNoThrow(try anotherTree.put(0))
         print("Updated values: \(anotherTree.values())")
@@ -99,26 +99,26 @@ class BinarySearchTreeTestCase: XCTestCase {
     
     func testResetRoot() {
         print("Current values: \(tree.values())")
-        let oldRoot: Node<Int> = tree.root_node!
+        let oldRoot: Node<Int> = tree.root!
         print("Old root: \(oldRoot.value!)")
         var oldValues: [Int] = tree.values()
         let newRoot: Node<Int> = Node<Int>(value: 15)
         print("New root: \(newRoot.value!)")
-        tree.root_node = newRoot
+        tree.root = newRoot
         //Add new root value for testing
         oldValues.append(newRoot.value!)
         oldValues.sort()
         print("Updated values: \(tree.values())")
         //Make sure we retained old values
         XCTAssertEqual(oldValues, tree.values().sorted())
-        XCTAssertNotEqual(oldRoot, tree.root_node)
-        XCTAssertTrue(tree.root_node?.value == newRoot.value)
+        XCTAssertNotEqual(oldRoot, tree.root)
+        XCTAssertTrue(tree.root?.value == newRoot.value)
     }
     
     func testMax() {
         let actualMax: Int = tree.values().max()!
         print("Actual Max: \(actualMax)")
-        let testMax: Int = (tree.max()?.value!)!
+        let testMax: Int = (tree.max?.value!)!
         print("Test Max: \(testMax)")
         XCTAssertEqual(actualMax, testMax)
     }
@@ -126,31 +126,31 @@ class BinarySearchTreeTestCase: XCTestCase {
     func testMin() {
         let actualMin: Int = tree.values().min()!
         print("Actual Min: \(actualMin)")
-        let testMin: Int = (tree.min()?.value ?? nil)!
+        let testMin: Int = (tree.min?.value ?? nil)!
         print("Test Min: \(testMin)")
         XCTAssertEqual(actualMin, testMin)
     }
     
     func testMaxWithNilRoot() {
         tree = BinarySearchTree<Int>()
-        let max: Int? = tree.max()?.value ?? nil
+        let max: Int? = tree.max?.value ?? nil
         XCTAssertNil(max)
     }
     
     func testMinWithNilRoot() {
          tree = BinarySearchTree<Int>()
-         let min: Int? = tree.min()?.value ?? nil
+         let min: Int? = tree.min?.value ?? nil
          XCTAssertNil(min)
     }
     
     func testHeight() {
         try! tree.put(7)
         try! tree.put(8)
-        XCTAssertEqual(tree.height((tree.root()?.value)!), 6)
+        XCTAssertEqual(tree.height((tree.root?.value)!), 6)
     }
     
     func testDepth() {
-        XCTAssertEqual(tree.depth((tree.root_node?.value)!), 0)
+        XCTAssertEqual(tree.depth((tree.root?.value)!), 0)
         XCTAssertEqual(tree.depth(6), 3)
     }
     
@@ -161,8 +161,8 @@ class BinarySearchTreeTestCase: XCTestCase {
     func testBalance() {
         try! tree.put(11)
         tree.balance()
-        let leftHeight: Int = tree.height((tree.root_node?.left?.value)!)
-        let rightHeight: Int = tree.height((tree.root_node?.right?.value)!)
+        let leftHeight: Int = tree.height((tree.root?.left?.value)!)
+        let rightHeight: Int = tree.height((tree.root?.right?.value)!)
         XCTAssertTrue(abs(leftHeight - rightHeight) <= 1)
     }
     

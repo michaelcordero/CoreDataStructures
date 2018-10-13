@@ -15,13 +15,16 @@ protocol Tree {
     func set(_ node: Node<T>, value: T) throws -> T?
     func put(_ value: T) throws -> Void
     func remove(_ value: T) throws -> Node<T>?
-    func size() -> Int
     func isEmpty() -> Bool
-    func root() -> Node<T>?
-    func max() -> Node<T>?
-    func min() -> Node<T>?
     func all() -> [Node<T>]
     func values() -> [T]
+    
+    /*computed properties*/
+    var size: Int { get }
+    var root: Node<T>? { get set }
+    var max: Node<T>? { get }
+    var min: Node<T>? { get }
+    
     
     /*algorithms*/
     func depth(_ value: T) -> Int
@@ -80,6 +83,14 @@ class Node<T: Comparable>: Equatable {
     // MARK: - Protocol Conformance
     static func == (lhs: Node<T>, rhs: Node<T>) -> Bool {
         return lhs.value == rhs.value && lhs.parent == rhs.parent && lhs.left == rhs.left && lhs.right == rhs.right
+    }
+    
+    static func > (lhs: Node<T>, rhs: Node<T>) -> Bool{
+        return lhs.value! > rhs.value!
+    }
+    
+    static func < (lhs: Node<T>, rhs: Node<T>) -> Bool {
+        return lhs.value! < rhs.value!
     }
     
     // MARK: - Public API

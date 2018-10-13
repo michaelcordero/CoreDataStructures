@@ -24,11 +24,14 @@ import Foundation
  */
 open class BinarySearchTree<T: Comparable> : BinaryTree {
     
-
     // MARK: - Properties
-    private var table: [T] = [T]() {didSet {count = table.count}}
-    var root_node: Node<T>? = Node<T>() {didSet {resetRoot((root_node?.value)!)}}
-    var count: Int
+    var size: Int
+    var root: Node<T>? = Node<T>() { didSet { resetRoot((root?.value)!) } }
+    var max: Node<T>? { get { return maximum(root!) } }
+    var min: Node<T>? { get { return minimum(root!) } }
+    
+    private var table: [T] = [T]() {didSet {size = table.count}}
+    //var root: Node<T>? = Node<T>() {didSet {resetRoot((root?.value)!)}}
     
     // MARK: - Constructor(s)
     
@@ -36,7 +39,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
      Creates an empty BinarySearchTree.
      */
     public init() {
-        count = 0
+        size = 0
     }
     
     /**
@@ -44,9 +47,9 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
      The BinarySearchTree may only contain values of the same type.
      */
     public init(rootNodeValue: T){
-        root_node = Node(value: rootNodeValue)
-        table.append((root_node?.value!)!)
-        count = 1
+        root = Node(value: rootNodeValue)
+        table.append((root?.value!)!)
+        size = 1
     }
     
     // MARK: - Private
@@ -269,7 +272,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     func get(_ value: T) -> Node<T>? {
-        return search(indexNode: root_node, value: value)
+        return search(indexNode: root, value: value)
     }
     
     func set(_ node: Node<T>, value: T) throws -> T? {
@@ -282,37 +285,21 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     func put(_ value: T) throws -> Void {
-        if root_node == nil || root_node?.value == nil { throw TreeError.NilRootError }
+        if root == nil || root?.value == nil { throw TreeError.NilRootError }
         if table.contains(value) {throw TreeError.DuplicateValueError}
         let node: Node<T> = Node(value: value)
-        insert(node: node, presentNode: root_node)
+        insert(node: node, presentNode: root)
     }
     
     func remove(_ value: T) throws -> Node<T>? {
-        guard let node: Node<T> = delete(indexNode: root_node, value: value) else {
+        guard let node: Node<T> = delete(indexNode: root, value: value) else {
             throw TreeError.InvalidNodeError
         }
         return node
     }
     
-    func size() -> Int {
-        return count
-    }
-    
     func isEmpty() -> Bool {
-        return count == 0
-    }
-    
-    func root() -> Node<T>? {
-        return root_node
-    }
-    
-    func max() -> Node<T>? {
-        return maximum(root_node!)
-    }
-    
-    func min() -> Node<T>? {
-        return minimum(root_node!)
+        return size == 0
     }
     
     func all() -> [Node<T>] {
@@ -333,15 +320,15 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     func preorder( operation: (Node<T>) -> Void ) {
-        preorder(root_node!, operation: operation)
+        preorder(root!, operation: operation)
     }
     
     func postorder( operation: (Node<T>) -> Void ) {
-        postorder(root_node!, operation: operation)
+        postorder(root!, operation: operation)
     }
     
     func inorder( operation: (Node<T>) -> Void ) {
-        inorder(root_node!, operation: operation)
+        inorder(root!, operation: operation)
     }
     
     /**
@@ -354,6 +341,6 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         value.round(.up)
         let index = Int(value)
         table.sort()
-        root_node = Node(value: table[index])
+        root = Node(value: table[index])
     }
 }
