@@ -12,7 +12,7 @@ import XCTest
 class BinarySearchTreeTestCase: XCTestCase {
     
     // MARK: - Test Object
-    var tree: BinarySearchTree<Int> = BinarySearchTree<Int>(rootNodeValue: 10)
+    var tree: BinarySearchTree<Int> = BinarySearchTree<Int>(10)
     
     // MARK: - XCTestCase
     
@@ -80,14 +80,6 @@ class BinarySearchTreeTestCase: XCTestCase {
         print("Updated values: \(tree.values())")
     }
     
-    func testEmptyRootInsert() {
-        let emptyTree: BinarySearchTree<Int> = BinarySearchTree<Int>()
-        print("Current values: \(emptyTree.values())")
-        let testValue: Int = 25
-        XCTAssertThrowsError(try emptyTree.put(testValue))
-        print("Updated values: \(emptyTree.values())")
-    }
-    
     func testSetRootAndInsert() {
         let anotherTree: BinarySearchTree<Int> = BinarySearchTree<Int>()
         print("Current values: \(anotherTree.values())")
@@ -101,16 +93,17 @@ class BinarySearchTreeTestCase: XCTestCase {
         print("Current values: \(tree.values())")
         let oldRoot: Node<Int> = tree.root!
         print("Old root: \(oldRoot.value!)")
-        var oldValues: [Int] = tree.values()
+        var oldValues: [Int] = Array<Int>(tree.values())
         let newRoot: Node<Int> = Node<Int>(value: 15)
         print("New root: \(newRoot.value!)")
         tree.root = newRoot
         //Add new root value for testing
         oldValues.append(newRoot.value!)
         oldValues.sort()
-        print("Updated values: \(tree.values())")
+        print("Old Values: \(oldValues)")
+        print("New values: \(tree.values(.Inorder))")
         //Make sure we retained old values
-        XCTAssertEqual(oldValues, tree.values().sorted())
+        XCTAssertEqual(oldValues, tree.values(.Inorder))
         XCTAssertNotEqual(oldRoot, tree.root)
         XCTAssertTrue(tree.root?.value == newRoot.value)
     }
@@ -158,20 +151,13 @@ class BinarySearchTreeTestCase: XCTestCase {
         XCTAssertEqual(tree.height(6), 1)
     }
     
-    func testBalance() {
-        try! tree.put(11)
-        tree.balance()
-        let leftHeight: Int = tree.height((tree.root?.left?.value)!)
-        let rightHeight: Int = tree.height((tree.root?.right?.value)!)
-        XCTAssertTrue(abs(leftHeight - rightHeight) <= 1)
-    }
-    
-//    func testPerformanceExample() {
-        // This is an example of a performance test case.
-//        self.measure {
-//            // Put the code you want to measure the time of here.
-//        }
-//      might be an excellent spot to ensure that BST retains O(log n) operations
+    // Turning off balance for now
+//    func testBalance() {
+//        try! tree.put(11)
+//        tree.balance()
+//        let leftHeight: Int = tree.height((tree.root?.left?.value)!)
+//        let rightHeight: Int = tree.height((tree.root?.right?.value)!)
+//        XCTAssertTrue(abs(leftHeight - rightHeight) <= 1)
 //    }
     
     /**
@@ -186,22 +172,22 @@ class BinarySearchTreeTestCase: XCTestCase {
     
     func testPreOrder() {
         let expected: [Int] = [10,3,1,5,6,21,14,13,20,22]
-        var actual: [Int] = []
-        tree.preorder(operation: { actual.append($0.value!) } )
-        XCTAssertEqual(expected, actual)
+        XCTAssertEqual(expected, tree.values(.Preorder))
+        XCTAssertNotEqual(tree.values(.Preorder), tree.values(.Postorder))
+        XCTAssertNotEqual(tree.values( .Preorder), tree.values(.Inorder))
     }
     
     func testPostOrder() {
         let expected: [Int] = [1,6,5,3,13,20,14,22,21,10]
-        var actual: [Int] = []
-        tree.postorder(operation: { actual.append( $0.value! ) } )
-        XCTAssertEqual(expected, actual)
+        XCTAssertEqual(expected, tree.values(.Postorder))
+        XCTAssertNotEqual(tree.values(.Postorder), tree.values(.Preorder))
+        XCTAssertNotEqual(tree.values(.Postorder), tree.values(.Inorder))
     }
     
     func testInOrder() {
         let expected: [Int] = [1,3,5,6,10,13,14,20,21,22]
-        var actual: [Int] = []
-        tree.inorder(operation: { actual.append( $0.value! ) } )
-        XCTAssertEqual(expected, actual)
+        XCTAssertEqual(expected, tree.values(.Inorder))
+        XCTAssertNotEqual(expected, tree.values(.Preorder))
+        XCTAssertNotEqual(expected, tree.values(.Postorder))
     }
 }

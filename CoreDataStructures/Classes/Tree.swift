@@ -18,6 +18,9 @@ protocol Tree {
     func isEmpty() -> Bool
     func all() -> [Node<T>]
     func values() -> [T]
+    func all(_ order: TreeOrder ) -> [Node<T>]
+    func values(_ order: TreeOrder ) -> [T]
+    func contains(_ value: T) -> Bool
     
     /*computed properties*/
     var size: Int { get }
@@ -44,6 +47,13 @@ enum TreeError: Error {
     case DuplicateValueError
     case InvalidNodeError
     case NilRootError
+}
+
+/*OrderEnum*/
+enum TreeOrder {
+    case Preorder
+    case Postorder
+    case Inorder
 }
 
 class Node<T: Comparable>: Equatable {
@@ -82,16 +92,17 @@ class Node<T: Comparable>: Equatable {
     
     // MARK: - Protocol Conformance
     static func == (lhs: Node<T>, rhs: Node<T>) -> Bool {
-        return lhs.value == rhs.value && lhs.parent == rhs.parent && lhs.left == rhs.left && lhs.right == rhs.right
+       // return lhs.value == rhs.value && lhs.parent == rhs.parent && lhs.left == rhs.left && lhs.right == rhs.right
+        return lhs.value! == rhs.value!
     }
     
-    static func > (lhs: Node<T>, rhs: Node<T>) -> Bool{
-        return lhs.value! > rhs.value!
-    }
-    
-    static func < (lhs: Node<T>, rhs: Node<T>) -> Bool {
-        return lhs.value! < rhs.value!
-    }
+//    static func > (lhs: Node<T>, rhs: Node<T>) -> Bool{
+//        return lhs.value! > rhs.value!
+//    }
+//    
+//    static func < (lhs: Node<T>, rhs: Node<T>) -> Bool {
+//        return lhs.value! < rhs.value!
+//    }
     
     // MARK: - Public API
     func isParent() -> Bool { return left != nil || right != nil }

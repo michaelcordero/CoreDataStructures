@@ -26,12 +26,20 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     
     // MARK: - Properties
     var size: Int
-    var root: Node<T>? = Node<T>() { didSet { resetRoot((root?.value)!) } }
+    var root: Node<T>? = Node<T>() {
+        // This operation saves the old values before re-setting the root.
+        // *Re-setting the root means you lose all nodes.
+        willSet {
+            self.old_values = self.values()
+        }
+        // This operation takes those old values and adds them back.
+        didSet {
+            old_values?.forEach({try! put($0)})
+        }
+    }
     var max: Node<T>? { get { return maximum(root!) } }
     var min: Node<T>? { get { return minimum(root!) } }
-    
-    private var table: [T] = [T]() {didSet {size = table.count}}
-    //var root: Node<T>? = Node<T>() {didSet {resetRoot((root?.value)!)}}
+    private var old_values: [T]?    // internal use only!!
     
     // MARK: - Constructor(s)
     
@@ -46,9 +54,8 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
      Creates a BinarySearchTree, initializing the root node value, to the specified value.
      The BinarySearchTree may only contain values of the same type.
      */
-    public init(rootNodeValue: T){
-        root = Node(value: rootNodeValue)
-        table.append((root?.value!)!)
+    public init(_ root_node_Value: T){
+        root = Node(value: root_node_Value)
         size = 1
     }
     
@@ -90,12 +97,30 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         if(indexNode == nil){
             return nil
         }
-        if(indexNode?.value! == value){
+        if(indexNode?.value! == value){ //found the node to be deleted
             let parent: Node<T>? = indexNode?.parent!
-            indexNode?.left?.parent = parent    
-            indexNode?.right?.parent = parent
-            let ix: Int = table.index(where: {$0 as! T == value})!
-            table.remove(at: ix)
+            let left_child: Node<T>? = indexNode?.left
+            let right_child: Node<T>? = indexNode?.right
+            
+            // re-attaching the appropriate child to the deleted node's parent
+            // effectively un-attaching indexNode effectively deleting it from the
+            // data structure.
+            // this method assumes that the right child is inserted with a greater
+            // value than the left sibling and the parent.
+            if right_child?.value != nil {
+                if indexNode == parent?.left {
+                    parent?.left = right_child
+                } else {
+                    parent?.right = right_child
+                }
+            } else {
+                if indexNode == parent?.right {
+                    parent?.right = left_child
+                } else {
+                    parent?.left = left_child
+                }
+            }
+            // end re-attachment.
             return indexNode
         }
         if(value < (indexNode?.value!)!) {
@@ -119,7 +144,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
             if(presentNode?.left == nil){
                 presentNode?.left = node
                 node.parent = presentNode
-                table.append(node.value!)
+                size += 1
             } else {
                 insert(node: node, presentNode: presentNode?.left)
             }
@@ -127,28 +152,10 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
             if(presentNode?.right == nil) {
                 presentNode?.right = node
                 node.parent = presentNode
-                table.append(node.value!)
+                size += 1
             } else {
                 insert(node: node, presentNode: presentNode?.right)
             }
-        }
-    }
-    
-    /**
-     Ensures old values are retained. Inserting root first.
-     
-     - Parameters:
-         - rootValue: new root value
-     - Returns: Void
-     */
-    private func resetRoot(_ rootValue: T) -> Void{
-        if !table.isEmpty {
-            let oldValues: [T] = table.filter({$0 != rootValue})
-            table = [T]()
-            table.append(rootValue)
-            oldValues.forEach({ try! put($0)})
-        } else {
-            table.append(rootValue)
         }
     }
     
@@ -285,8 +292,8 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     func put(_ value: T) throws -> Void {
-        if root == nil || root?.value == nil { throw TreeError.NilRootError }
-        if table.contains(value) {throw TreeError.DuplicateValueError}
+        if root == nil || root?.value == nil { root = Node(value: value); return }
+        if self.get(value) != nil {throw TreeError.DuplicateValueError}
         let node: Node<T> = Node(value: value)
         insert(node: node, presentNode: root)
     }
@@ -303,11 +310,51 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     func all() -> [Node<T>] {
-        return table.map( { Node(value: $0) } )
+        var result: [Node<T>] = []
+        preorder(operation: {result.append($0)})
+        return result
     }
     
     func values() -> [T] {
-        return table
+        var result: [T] = []
+        preorder(operation: {
+            guard let value: T = $0.value else { return } //do not add to array
+            result.append(value)
+        })
+        return result
+    }
+    
+    func all(_ order: TreeOrder) -> [Node<T>] {
+        var result: [Node<T>] = []
+        switch order {
+        case .Preorder: preorder(operation: {result.append($0)})
+        case .Postorder: postorder(operation: {result.append($0)})
+        case .Inorder: inorder(operation: {result.append($0)})
+        }
+        return result
+    }
+    
+    func values(_ order: TreeOrder) -> [T] {
+        var result: [T] = []
+        switch order {
+        case .Preorder: preorder(operation: {
+            guard let value: T = $0.value else { return }
+            result.append(value)
+        })
+        case .Postorder: postorder(operation: {
+            guard let value: T = $0.value else { return }
+            result.append(value)
+        })
+        case .Inorder: inorder(operation: {
+            guard let value: T = $0.value else { return }
+            result.append(value)
+        })
+        }
+        return result
+    }
+    
+    func contains(_ value: T) -> Bool {
+        return self.get(value) != nil
     }
     
     func depth(_ value: T) -> Int {
@@ -336,11 +383,11 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
      The definition of balanced is: The heights of the two child subtrees of any node differ by at most one.
      [Wikipedia](https://en.wikipedia.org/wiki/AVL_tree)
      */
-    public func balance() -> Void {
-        var value = Float(table.count / 2)
-        value.round(.up)
-        let index = Int(value)
-        table.sort()
-        root = Node(value: table[index])
-    }
+//    public func balance() -> Void {
+//        var value = Float(self.size / 2)
+//        value.round(.up)
+//        let index = Int(value)
+//        let ar: [T] = self.values(.Inorder)
+//        root = Node(value: ar[index])
+//    }
 }
