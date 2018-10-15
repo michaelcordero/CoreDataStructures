@@ -268,8 +268,8 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     // MARK: - Public API
-    func family(parent: Node<T>?) -> (parent: Node<T>, left: Node<T>?, right: Node<T>?) {
-        return (parent, parent.left, parent.right)
+    func family(parent: Node<T>?) -> (parent: Node<T>?, left: Node<T>?, right: Node<T>?) {
+        return (parent!, parent!.left, parent!.right)
     }
     func children(parent: Node<T>) -> (left: Node<T>?, right: Node<T>?) {
         return ( parent.left, parent.right )

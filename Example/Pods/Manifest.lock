@@ -1,5 +1,5 @@
 PODS:
-  - CoreDataStructures (0.1.0)
+  - CoreDataStructures (0.1.2)
 
 DEPENDENCIES:
   - CoreDataStructures (from `../`)
@@ -9,7 +9,7 @@ EXTERNAL SOURCES:
     :path: "../"
 
 SPEC CHECKSUMS:
-  CoreDataStructures: 04d563a2bc69b59a71bce04c55b3bf491b2cd7dd
+  CoreDataStructures: 8545332b721b4cdc1020e95178fcabb219305a74
 
 PODFILE CHECKSUM: dc15ac95a1c70fc41642de6c7704cf591c0b1ad9
 
