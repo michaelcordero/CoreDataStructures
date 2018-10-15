@@ -400,10 +400,10 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         let c: Node<T> = x
         
         // Subtrees of the root's childrens (a,b,c) i.e. children's children
-        let t0: (Node<T>?, Node<T>?, Node<T>?) = b.left != nil ? family(parent: b.left!) : (b.left ?? nil, nil, nil)
+        let t0: (Node<T>?, Node<T>?, Node<T>?) = b.left != nil ? family(parent: b.left) : (b.left ?? nil, nil, nil)
         let t1: (Node<T>?, Node<T>?, Node<T>?) = c.left != nil ? family(parent: c.left! ) : (c.left ?? nil, nil, nil)
-        let t2: (Node<T>?, Node<T>?, Node<T>?) = c.right != nil ? family(parent: c.right!) : (c.right ?? nil, nil, nil)
-        let t3: (Node<T>?, Node<T>?, Node<T>?) = a.right != nil ? family(parent: a.right!) : (a.right ?? nil, nil, nil)
+        let t2: (Node<T>?, Node<T>?, Node<T>?) = c.right != nil ? family(parent: c.right) : (c.right ?? nil, nil, nil)
+        let t3: (Node<T>?, Node<T>?, Node<T>?) = a.right != nil ? family(parent: a.right) : (a.right ?? nil, nil, nil)
 
         // 2. replace the subtree rooted at a with a new subtree rooted at b
         // High Level swap
