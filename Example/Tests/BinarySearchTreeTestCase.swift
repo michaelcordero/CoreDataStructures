@@ -53,6 +53,38 @@ class BinarySearchTreeTestCase: XCTestCase {
         print("Updated values: \(tree.values())")
     }
     
+    /// This method is moreso geared towards testing the
+    /// actual validity of the Tree's O(log n) retrieval
+    /// of data. As of 10/14/2018 The setup uses 10 elements.
+    /// 22 being the furthermost right child. Quick math will
+    //  tell you that 2^3 = 8, which is closer to 10, than 2^4 = 16.
+    //  Therefore: the BST search method should only be recursively called
+    /// between 3 and 4 times. Log2^10 = 3.3219280949.
+    /// To actually count # of times a method is called:
+    /// 1. Put a breakpoint at the first line of the method.
+    ///    in this case BinarySearchTree::search().
+    /// 2. Right Click on break point. Click edit.
+    /// 3. Click "Add Action"
+    /// 4. Select Log Message from the drop down menu.
+    /// 5. Add the following to the text area: "%B hit %H"
+    /// 6. Click checkbox, "Automatically continue after evaluating actions."
+    ///    so the breakpoint doesn't stop every single iteration.
+    /// 7. Run test.
+    func testGetValidValue(){
+        /// The setup() calls puts(), which in turn calls the search() method,
+        /// to place the nodes in the correct locations.
+        /// We only care about the search recursive calls in the context of our get().
+        print("Ignore previous hits")
+        let valid_value: Int = 22
+        let returned_value: Int? = tree.get(valid_value)?.value
+        XCTAssertNotNil(returned_value)
+    }
+    
+    func testGetInvalidValue(){
+        let invalid_value: Int = 72
+        XCTAssertNil(tree.get(invalid_value))
+    }
+    
     func testAddPreExistingValue() {
         let testValue: Int = 5
         print("Existing values: \(tree.values())")
