@@ -23,7 +23,6 @@ import Foundation
  [Wikipedia](https://en.wikipedia.org/wiki/Binary_search_tree)
  */
 open class BinarySearchTree<T: Comparable> : BinaryTree {
-    
     // MARK: - Properties
     var size: Int
     var root: Node<T>? = Node<T>() {
@@ -269,6 +268,9 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     // MARK: - Public API
+    func family(parent: Node<T>?) -> (parent: Node<T>, left: Node<T>?, right: Node<T>?) {
+        return (parent, parent.left, parent.right)
+    }
     func children(parent: Node<T>) -> (left: Node<T>?, right: Node<T>?) {
         return ( parent.left, parent.right )
     }
@@ -381,13 +383,62 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     /**
      The purpose of this function is to restore the BST to O(log n) status.
      The definition of balanced is: The heights of the two child subtrees of any node differ by at most one.
-     [Wikipedia](https://en.wikipedia.org/wiki/AVL_tree)
+     This code is inspired by Data Structures & Algorithms, 5th edition. Goodrich & Tamassia.
+     Ch. 10.2 pg. 451
+     "The modification of a tree T caused by a "trinode restructuring operation is often called a
+     rotation., because of the geometric way we can visualize it changes the tree."
      */
-//    public func balance() -> Void {
-//        var value = Float(self.size / 2)
-//        value.round(.up)
-//        let index = Int(value)
-//        let ar: [T] = self.values(.Inorder)
-//        root = Node(value: ar[index])
-//    }
+    
+    func restructure(_ x: Node<T>) -> Void {
+        let y: Node<T> = x.parent!  // parent
+        let z: Node<T> = (x.parent?.parent!)! // grandparent
+        
+        
+        // 1. let (a, b, c) be an inorder listing of the nodes xyz
+        let a: Node<T> = z
+        let b: Node<T> = y
+        let c: Node<T> = x
+        
+        // Subtrees of the root's childrens (a,b,c) i.e. children's children
+        let t0: (Node<T>?, Node<T>?, Node<T>?) = b.left != nil ? family(parent: b.left!) : (b.left ?? nil, nil, nil)
+        let t1: (Node<T>?, Node<T>?, Node<T>?) = c.left != nil ? family(parent: c.left! ) : (c.left ?? nil, nil, nil)
+        let t2: (Node<T>?, Node<T>?, Node<T>?) = c.right != nil ? family(parent: c.right!) : (c.right ?? nil, nil, nil)
+        let t3: (Node<T>?, Node<T>?, Node<T>?) = a.right != nil ? family(parent: a.right!) : (a.right ?? nil, nil, nil)
+
+        // 2. replace the subtree rooted at a with a new subtree rooted at b
+        // High Level swap
+        if z == z.parent?.left {
+            z.parent?.left = c
+        } else {
+            z.parent?.right = c
+        }
+        // T0 & T1 go to b. T0 already belongs to b (not necessary).
+        // T1 originally belonged to c, so move is necessary.
+        // High Level Swap
+        c.left = b
+        // High Level Swap
+        b.left = t0.0
+        // Low Level Swap
+        b.left?.left = t0.1     // left child
+        b.left?.right = t0.2    // right child
+        b.right = t1.0          // parent
+        b.right?.left = t1.1    // left child
+        b.right?.right = t1.2  // right child
+        
+        
+        // T2 & T3 goes to a
+        // T2 orignally belonged to c, so move is necessary
+        // T3 orignally belong to a, so move is (not necessary)
+        // High Level Swap
+        c.right = a
+        // High Level Swap
+        a.left = t2.0
+        // Low Level Swap
+        a.left?.left = t2.1
+        a.left?.right = t2.2
+        a.right = t3.0
+        a.right?.left = t3.1
+        a.right?.right = t3.2
+        
+    }
 }

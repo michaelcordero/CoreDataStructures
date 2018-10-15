@@ -222,4 +222,50 @@ class BinarySearchTreeTestCase: XCTestCase {
         XCTAssertNotEqual(expected, tree.values(.Preorder))
         XCTAssertNotEqual(expected, tree.values(.Postorder))
     }
+    
+    ///
+    ///     Trinode Restructure Test (i.e balance)
+    ///
+    ///     Tree example on pg. 450, order of insertion is important
+    func testRestructure() {
+        let unbalanced_tree: BinarySearchTree<Int> = BinarySearchTree<Int>(44)
+        try! unbalanced_tree.put(17)
+        try! unbalanced_tree.put(78) // this node becomes left heavy
+        try! unbalanced_tree.put(32)
+        try! unbalanced_tree.put(50)
+        try! unbalanced_tree.put(88)
+        try! unbalanced_tree.put(48)
+        try! unbalanced_tree.put(62)
+        try! unbalanced_tree.put(54)
+        
+        let x: Node<Int> = unbalanced_tree.get(62)!     // node to be restructured
+        let y: Node<Int> = unbalanced_tree.get(50)!     // parent
+        let z: Node<Int> = unbalanced_tree.get(78)!     // grandparent
+        
+        // get references to children, before they change parents
+        let t1: (Node<Int>, Node<Int>?, Node<Int>?) = x.left != nil ? unbalanced_tree.family(parent: x.left! ) : (x.left!, nil, nil)
+        
+        // Check Preconditions before test runs
+        XCTAssertEqual(unbalanced_tree.root?.right, z)
+        XCTAssertEqual(z.left, y)
+        XCTAssertEqual(y.right, x)
+        
+        // Now test the method
+        unbalanced_tree.restructure(unbalanced_tree.get(62)!)
+        
+        
+        // High Level Swaps :: verify
+        XCTAssertEqual(unbalanced_tree.root?.right, x)
+        XCTAssertEqual(x.left, y)
+        XCTAssertEqual(x.right, z)
+        
+        
+        // Low Level Swaps :: verify
+        
+        /// Make sure x's left children now belong to y's right
+//        XCTAssertEqual(y.right, t1.0) // parent check
+//        XCTAssertEqual(y.right?.left, t1.1) // left child check
+//        XCTAssertEqual(y.right?.right, t1.2) // right child check
+        
+    }
 }
