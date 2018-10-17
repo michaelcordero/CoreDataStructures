@@ -93,6 +93,11 @@ class Node<T: Comparable>: Equatable {
     // MARK: - Protocol Conformance
     static func == (lhs: Node<T>, rhs: Node<T>) -> Bool {
        // return lhs.value == rhs.value && lhs.parent == rhs.parent && lhs.left == rhs.left && lhs.right == rhs.right
+        if lhs.value == nil && rhs.value != nil {
+            return false
+        } else if rhs.value == nil && lhs.value != nil {
+            return false
+        }
         return lhs.value! == rhs.value!
     }
     

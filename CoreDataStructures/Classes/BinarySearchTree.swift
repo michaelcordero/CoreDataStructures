@@ -389,7 +389,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
      rotation., because of the geometric way we can visualize it changes the tree."
      */
     
-    func restructure(_ x: Node<T>) -> Void {
+    func restructure(_ x: Node<T>) -> Node<T>? {
         let y: Node<T> = x.parent!  // parent
         let z: Node<T> = (x.parent?.parent!)! // grandparent
         
@@ -428,7 +428,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         
         // T2 & T3 goes to a
         // T2 orignally belonged to c, so move is necessary
-        // T3 orignally belong to a, so move is (not necessary)
+        // T3 orignally belong to a, so move may not be necessary
         // High Level Swap
         c.right = a
         // High Level Swap
@@ -440,5 +440,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         a.right?.left = t3.1
         a.right?.right = t3.2
         
+        // pg.467 ?
+        return c
     }
 }

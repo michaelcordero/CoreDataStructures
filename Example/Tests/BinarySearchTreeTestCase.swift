@@ -243,7 +243,9 @@ class BinarySearchTreeTestCase: XCTestCase {
         let z: Node<Int> = unbalanced_tree.get(78)!     // grandparent
         
         // get references to children, before they change parents
-//        let t1: (Node<Int>?, Node<Int>?, Node<Int>?) = x.left != nil ? unbalanced_tree.family(parent: x.left! ) : (x.left ?? nil, nil, nil)
+        // only t1 & t2 change parents
+        let t1: (Node<Int>?, Node<Int>?, Node<Int>?) = x.left != nil ? unbalanced_tree.family(parent: x.left! ) : (x.left ?? nil, nil, nil)
+        let t2 = x.right != nil ? unbalanced_tree.family(parent: x.right!) : (x.right ?? nil, nil, nil)
         
         // Check Preconditions before test runs
         XCTAssertEqual(unbalanced_tree.root?.right, z)
@@ -251,8 +253,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         XCTAssertEqual(y.right, x)
         
         // Now test the method
-        unbalanced_tree.restructure(unbalanced_tree.get(62)!)
-        
+        let _ = unbalanced_tree.restructure(unbalanced_tree.get(62)!)
         
         // High Level Swaps :: verify
         XCTAssertEqual(unbalanced_tree.root?.right, x)
@@ -263,9 +264,13 @@ class BinarySearchTreeTestCase: XCTestCase {
         // Low Level Swaps :: verify
         
         /// Make sure x's left children now belong to y's right
-//        XCTAssertEqual(y.right, t1.0) // parent check
-//        XCTAssertEqual(y.right?.left, t1.1) // left child check
-//        XCTAssertEqual(y.right?.right, t1.2) // right child check
+        XCTAssertEqual(y.right, t1.0) // parent check
+        XCTAssertEqual(y.right?.left, t1.1) // left child check
+        XCTAssertEqual(y.right?.right, t1.2) // right child check
+        // Make sure x's right children now belong to z's left
+        XCTAssertEqual(z.left, t2.0)
+        XCTAssertEqual(z.left?.left, t2.1)
+        XCTAssertEqual(z.left?.right, t2.2)
         
     }
 }
