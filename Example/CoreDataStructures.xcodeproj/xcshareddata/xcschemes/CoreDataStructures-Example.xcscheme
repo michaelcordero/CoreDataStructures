@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1000"
+   LastUpgradeVersion = "1020"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -43,7 +43,8 @@
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
          <TestableReference
-            skipped = "NO">
+            skipped = "NO"
+            useTestSelectionWhitelist = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "607FACE41AFB9204008FA782"
@@ -51,6 +52,116 @@
                BlueprintName = "CoreDataStructures_Tests"
                ReferencedContainer = "container:CoreDataStructures.xcodeproj">
             </BuildableReference>
+            <SelectedTests>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testAddPreExistingValue()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testAddValidValue()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testDepth()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testGetInvalidValue()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testGetValidValue()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testHeight()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testInOrder()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testMax()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testMaxWithNilRoot()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testMin()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testMinWithNilRoot()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testNodeHeight()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testPostOrder()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testPreOrder()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testRemoveInvalidValue()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testRemoveValidValue()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testResetRoot()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testRestructure()">
+               </Test>
+               <Test
+                  Identifier = "BinarySearchTreeTestCase/testSetRootAndInsert()">
+               </Test>
+               <Test
+                  Identifier = "LinkedListTestCase/testAdd()">
+               </Test>
+               <Test
+                  Identifier = "LinkedListTestCase/testAll()">
+               </Test>
+               <Test
+                  Identifier = "LinkedListTestCase/testExample()">
+               </Test>
+               <Test
+                  Identifier = "LinkedListTestCase/testGet()">
+               </Test>
+               <Test
+                  Identifier = "LinkedListTestCase/testGetEmpty()">
+               </Test>
+               <Test
+                  Identifier = "QueueTestCase/testAdd()">
+               </Test>
+               <Test
+                  Identifier = "QueueTestCase/testClear()">
+               </Test>
+               <Test
+                  Identifier = "QueueTestCase/testElement()">
+               </Test>
+               <Test
+                  Identifier = "QueueTestCase/testPerformanceExample()">
+               </Test>
+               <Test
+                  Identifier = "QueueTestCase/testRemove()">
+               </Test>
+               <Test
+                  Identifier = "QueueTestCase/testSize()">
+               </Test>
+               <Test
+                  Identifier = "QueueTestCase/unspecifiedMethod_-[QueueTestCase (null)]()">
+               </Test>
+               <Test
+                  Identifier = "StackTestCase/testEmpty()">
+               </Test>
+               <Test
+                  Identifier = "StackTestCase/testPeek()">
+               </Test>
+               <Test
+                  Identifier = "StackTestCase/testPerformanceExample()">
+               </Test>
+               <Test
+                  Identifier = "StackTestCase/testPop()">
+               </Test>
+               <Test
+                  Identifier = "StackTestCase/unspecifiedMethod_-[StackTestCase (null)]()">
+               </Test>
+            </SelectedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

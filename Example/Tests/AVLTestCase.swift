@@ -24,17 +24,17 @@ class AVLTestCase: XCTestCase {
     func testPutAutoBalances() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
-        try! avl.put(17)
-        XCTAssertTrue(avl.isBalanced(avl.get(17)!))
-        
-        try! avl.put(78)
-        XCTAssertTrue(avl.isBalanced(avl.get(78)!))
-        
-        try! avl.put(32)
-        XCTAssertTrue(avl.isBalanced(avl.get(32)!))
-        
-        try! avl.put(33)    // make root left heavy and 17 right heavy, i.e. Left-Right case
-        XCTAssertTrue(avl.isBalanced(avl.get(33)!))
+//        try! avl.put(17)
+//        XCTAssertTrue(avl.isBalanced(avl.get(17)!))
+//
+//        try! avl.put(78)
+//        XCTAssertTrue(avl.isBalanced(avl.get(78)!))
+//
+//        try! avl.put(32)
+//        XCTAssertTrue(avl.isBalanced(avl.get(32)!))
+//
+//        try! avl.put(33)    // make root left heavy and 17 right heavy, i.e. Left-Right case
+//        XCTAssertTrue(avl.isBalanced(avl.get(33)!))
 //        try! avl.put(50)
 //        try! avl.put(88)
 //        try! avl.put(48)

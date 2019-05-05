@@ -389,6 +389,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
      rotation., because of the geometric way we can visualize it changes the tree."
      */
     
+    @available(swift, deprecated: 0.1.3, message: "Better balancing method coming soon!")
     func restructure(_ x: Node<T>) -> Node<T>? {
         let y: Node<T> = x.parent!  // parent
         let z: Node<T> = (x.parent?.parent!)! // grandparent

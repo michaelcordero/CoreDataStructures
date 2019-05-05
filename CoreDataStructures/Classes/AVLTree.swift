@@ -161,10 +161,8 @@ extension AVLTree.AVLNode : CustomDebugStringConvertible {
         description += "Left: \(String(describing: self.left)), "
         description += "Right: \(String(describing: self.right)), "
         description += " ]"
-        
         return description
     }
-    
     
 }
 
