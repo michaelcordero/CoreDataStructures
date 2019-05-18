@@ -54,6 +54,12 @@
             </BuildableReference>
             <SelectedTests>
                <Test
+                  Identifier = "AVLTestCase/testPutAutoBalances()">
+               </Test>
+               <Test
+                  Identifier = "AVLTestCase/testRemoveAutoBalances()">
+               </Test>
+               <Test
                   Identifier = "BinarySearchTreeTestCase/testAddPreExistingValue()">
                </Test>
                <Test
