@@ -25,20 +25,9 @@ import Foundation
 open class BinarySearchTree<T: Comparable> : BinaryTree {
     // MARK: - Properties
     var size: Int
-    var root: Node<T>? = Node<T>() {
-        // This operation saves the old values before re-setting the root.
-        // *Re-setting the root means you lose all nodes.
-        willSet {
-            self.old_values = self.values()
-        }
-        // This operation takes those old values and adds them back.
-        didSet {
-            old_values?.forEach({try! put($0)})
-        }
-    }
-    var max: Node<T>? { get { return maximum(root!) } }
-    var min: Node<T>? { get { return minimum(root!) } }
-    private var old_values: [T]?    // internal use only!!
+    var root: Node<T>?
+    var max: Node<T>? {  return root == nil ? nil : maximum(root!) }
+    var min: Node<T>? { return root == nil ? nil : minimum(root!) }
     
     // MARK: - Constructor(s)
     
@@ -220,6 +209,9 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     ///   - index_node: represents the currently indexed node.
     ///   - operation: a function that you want to apply to the node.
     private func preorder(_ index_node: Node<T>, operation: (Node<T>) -> Void  ) -> Void {
+        if root == nil {
+            return
+        }
         operation(index_node)
         
         if index_node.left != nil {
@@ -238,6 +230,9 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     ///   - index_node: represents the currently indexed node.
     ///   - operation: a function that you want to apply to the node.
     private func postorder(_ index_node: Node<T>, operation: (Node<T>) -> Void  ) -> Void {
+        if root == nil {
+            return
+        }
         if index_node.left != nil {
             postorder(index_node.left!, operation: operation)
         }
@@ -256,6 +251,9 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     ///   - index_node: represents the currently indexed node.
     ///   - operation: a function that you want to apply to the node.
     private func inorder(_ index_node: Node<T>, operation: (Node<T>) -> Void  ) -> Void {
+        if root == nil {
+            return
+        }
         if index_node.left != nil {
             inorder(index_node.left!, operation: operation)
         }
@@ -265,6 +263,52 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         if index_node.right != nil {
             inorder(index_node.right!, operation: operation)
         }
+    }
+    
+    /**
+     The purpose of these functions is to restore the BST to O(log n) status.
+     The definition of balanced is: The heights of the two child subtrees of any node differ by at most one.
+     This code is copied and retrofitted from [geeksforgeeks.org](https://www.geeksforgeeks.org/convert-normal-bst-balanced-bst/)
+     */
+    
+    /// This method takes an inordered array and assigns nodes to their parents, as well as left and right siblings
+    ///
+    /// - Parameters:
+    ///   - inorder_array: represents the previously sorted inorder array of the tree's values.
+    ///   - start: an integer to represent the index of where to start in the array
+    ///   - end: an integer to represent the index of where the array ends
+    private func sortedArrayToBST(_ inorder_array: [Node<T>], start: Int, end: Int ) -> Node<T>? {
+        // base case
+        if start > end {
+            return nil
+        }
+        
+        // get the middle element and make it root
+        let mid: Int = (start + end) / 2
+        let current: Node<T> = Node(value: inorder_array[mid].value )
+        
+        // Recursively construct the left subtree and make it left child of root
+        current.left = sortedArrayToBST(inorder_array, start: start, end: mid - 1)
+        current.left?.parent = current
+        
+        // Recursively construct the right subtree and make it right child of the root
+        current.right = sortedArrayToBST(inorder_array, start: mid + 1, end: end)
+        current.right?.parent = current
+        
+        return current
+    }
+    
+    /// Helper method. The nodes have private access, so the public API access's these internal methods.
+    private func internalBalance(){
+        let ar: [Node<T>] = self.all(.Inorder)
+        self.root = sortedArrayToBST(ar, start: 0, end: ar.count - 1)!
+    }
+    
+    private func isInternalBalanced(_ node: Node<T> ) -> Bool {
+        let left_height: Int = (node.left != nil && node.left?.value != nil ? self.height((node.left?.value!)!) : 0 )
+        let right_height: Int = (node.right != nil && node.right?.value != nil ? self.height((node.right?.value!)!) : 0 )
+        let balance_factor = left_height - right_height
+        return ((-1 <= balance_factor) && (balance_factor <= 1))
     }
     
     // MARK: - Public API
@@ -318,6 +362,9 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     func values() -> [T] {
+        if root == nil {
+            return [T]()
+        }
         var result: [T] = []
         preorder(operation: {
             guard let value: T = $0.value else { return } //do not add to array
@@ -380,68 +427,15 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         inorder(root!, operation: operation)
     }
     
-    /**
-     The purpose of this function is to restore the BST to O(log n) status.
-     The definition of balanced is: The heights of the two child subtrees of any node differ by at most one.
-     This code is inspired by Data Structures & Algorithms, 5th edition. Goodrich & Tamassia.
-     Ch. 10.2 pg. 451
-     "The modification of a tree T caused by a "trinode restructuring operation is often called a
-     rotation., because of the geometric way we can visualize it changes the tree."
-     */
-    
-    @available(swift, deprecated: 0.1.3, message: "Better balancing method coming soon!")
-    func restructure(_ x: Node<T>) -> Node<T>? {
-        let y: Node<T> = x.parent!  // parent
-        let z: Node<T> = (x.parent?.parent!)! // grandparent
-        
-        
-        // 1. let (a, b, c) be an inorder listing of the nodes xyz
-        let a: Node<T> = z
-        let b: Node<T> = y
-        let c: Node<T> = x
-        
-        // Subtrees of the root's childrens (a,b,c) i.e. children's children
-        let t0: (Node<T>?, Node<T>?, Node<T>?) = b.left != nil ? family(parent: b.left) : (b.left ?? nil, nil, nil)
-        let t1: (Node<T>?, Node<T>?, Node<T>?) = c.left != nil ? family(parent: c.left! ) : (c.left ?? nil, nil, nil)
-        let t2: (Node<T>?, Node<T>?, Node<T>?) = c.right != nil ? family(parent: c.right) : (c.right ?? nil, nil, nil)
-        let t3: (Node<T>?, Node<T>?, Node<T>?) = a.right != nil ? family(parent: a.right) : (a.right ?? nil, nil, nil)
-
-        // 2. replace the subtree rooted at a with a new subtree rooted at b
-        // High Level swap
-        if z == z.parent?.left {
-            z.parent?.left = c
-        } else {
-            z.parent?.right = c
-        }
-        // T0 & T1 go to b. T0 already belongs to b (not necessary).
-        // T1 originally belonged to c, so move is necessary.
-        // High Level Swap
-        c.left = b
-        // High Level Swap
-        b.left = t0.0
-        // Low Level Swap
-        b.left?.left = t0.1     // left child
-        b.left?.right = t0.2    // right child
-        b.right = t1.0          // parent
-        b.right?.left = t1.1    // left child
-        b.right?.right = t1.2  // right child
-        
-        
-        // T2 & T3 goes to a
-        // T2 orignally belonged to c, so move is necessary
-        // T3 orignally belong to a, so move may not be necessary
-        // High Level Swap
-        c.right = a
-        // High Level Swap
-        a.left = t2.0
-        // Low Level Swap
-        a.left?.left = t2.1
-        a.left?.right = t2.2
-        a.right = t3.0
-        a.right?.left = t3.1
-        a.right?.right = t3.2
-        
-        // pg.467 ?
-        return c
+    func balance() -> Void {
+        internalBalance()
     }
+    
+    func isBalanced() -> Bool {
+        return isInternalBalanced(self.root!)
+    }
+   
 }
+
+
+

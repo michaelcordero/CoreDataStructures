@@ -13,9 +13,9 @@ class BinarySearchTreeTestCase: XCTestCase {
     
     // MARK: - Test Object
     var tree: BinarySearchTree<Int> = BinarySearchTree<Int>(10)
-    
+
     // MARK: - XCTestCase
-    
+
     /**
                                 10
                             /         \
@@ -38,12 +38,12 @@ class BinarySearchTreeTestCase: XCTestCase {
         try! tree.put(13)
         try! tree.put(20)
     }
-    
+
     override func tearDown() {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
         super.tearDown()
     }
-    
+
     // MARK: - Functional Tests
     func testAddValidValue() {
         let testValue: Int = 32
@@ -52,7 +52,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         XCTAssertNoThrow(try! tree.put(testValue))
         print("Updated values: \(tree.values())")
     }
-    
+
     /// This method is moreso geared towards testing the
     /// actual validity of the Tree's O(log n) retrieval
     /// of data. As of 10/14/2018 The setup uses 10 elements.
@@ -79,12 +79,12 @@ class BinarySearchTreeTestCase: XCTestCase {
         let returned_value: Int? = tree.get(valid_value)?.value
         XCTAssertNotNil(returned_value)
     }
-    
+
     func testGetInvalidValue(){
         let invalid_value: Int = 72
         XCTAssertNil(tree.get(invalid_value))
     }
-    
+
     func testAddPreExistingValue() {
         let testValue: Int = 5
         print("Existing values: \(tree.values())")
@@ -92,7 +92,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         XCTAssertThrowsError(try tree.put(testValue))
         print("Updated values: \(tree.values())")
     }
-    
+
     func testRemoveValidValue() {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
@@ -103,7 +103,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         print("Updated values: \(tree.values())")
         XCTAssertEqual(removedNode.value, testNode.value)
     }
-    
+
     func testRemoveInvalidValue() {
         print("Valid values: \(tree.values())")
         let invalidValue: Int = 15
@@ -111,7 +111,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         XCTAssertThrowsError(try tree.remove(invalidValue))
         print("Updated values: \(tree.values())")
     }
-    
+
     func testSetRootAndInsert() {
         let anotherTree: BinarySearchTree<Int> = BinarySearchTree<Int>()
         print("Current values: \(anotherTree.values())")
@@ -120,26 +120,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         XCTAssertNoThrow(try anotherTree.put(0))
         print("Updated values: \(anotherTree.values())")
     }
-    
-    func testResetRoot() {
-        print("Current values: \(tree.values())")
-        let oldRoot: Node<Int> = tree.root!
-        print("Old root: \(oldRoot.value!)")
-        var oldValues: [Int] = Array<Int>(tree.values())
-        let newRoot: Node<Int> = Node<Int>(value: 15)
-        print("New root: \(newRoot.value!)")
-        tree.root = newRoot
-        //Add new root value for testing
-        oldValues.append(newRoot.value!)
-        oldValues.sort()
-        print("Old Values: \(oldValues)")
-        print("New values: \(tree.values(.Inorder))")
-        //Make sure we retained old values
-        XCTAssertEqual(oldValues, tree.values(.Inorder))
-        XCTAssertNotEqual(oldRoot, tree.root)
-        XCTAssertTrue(tree.root?.value == newRoot.value)
-    }
-    
+
     func testMax() {
         let actualMax: Int = tree.values().max()!
         print("Actual Max: \(actualMax)")
@@ -147,7 +128,7 @@ class BinarySearchTreeTestCase: XCTestCase {
         print("Test Max: \(testMax)")
         XCTAssertEqual(actualMax, testMax)
     }
-    
+
     func testMin() {
         let actualMin: Int = tree.values().min()!
         print("Actual Min: \(actualMin)")
@@ -155,43 +136,42 @@ class BinarySearchTreeTestCase: XCTestCase {
         print("Test Min: \(testMin)")
         XCTAssertEqual(actualMin, testMin)
     }
-    
+
     func testMaxWithNilRoot() {
         tree = BinarySearchTree<Int>()
         let max: Int? = tree.max?.value ?? nil
         XCTAssertNil(max)
     }
-    
+
     func testMinWithNilRoot() {
          tree = BinarySearchTree<Int>()
          let min: Int? = tree.min?.value ?? nil
          XCTAssertNil(min)
     }
-    
+
     func testHeight() {
         try! tree.put(7)
         try! tree.put(8)
         XCTAssertEqual(tree.height((tree.root?.value)!), 6)
     }
-    
+
     func testDepth() {
         XCTAssertEqual(tree.depth((tree.root?.value)!), 0)
         XCTAssertEqual(tree.depth(6), 3)
     }
-    
+
     func testNodeHeight() {
         XCTAssertEqual(tree.height(6), 1)
     }
-    
-    // Turning off balance for now
-//    func testBalance() {
-//        try! tree.put(11)
-//        tree.balance()
-//        let leftHeight: Int = tree.height((tree.root?.left?.value)!)
-//        let rightHeight: Int = tree.height((tree.root?.right?.value)!)
-//        XCTAssertTrue(abs(leftHeight - rightHeight) <= 1)
-//    }
-    
+
+    func testBalance() {
+        try! tree.put(11)
+        tree.balance()
+        let leftHeight: Int = tree.height((tree.root?.left?.value)!)
+        let rightHeight: Int = tree.height((tree.root?.right?.value)!)
+        XCTAssertTrue(abs(leftHeight - rightHeight) <= 1)
+    }
+
     /**
                     10
                 /         \
@@ -201,21 +181,21 @@ class BinarySearchTreeTestCase: XCTestCase {
                     \      / \
                     6     13  20
      */
-    
+
     func testPreOrder() {
         let expected: [Int] = [10,3,1,5,6,21,14,13,20,22]
         XCTAssertEqual(expected, tree.values(.Preorder))
         XCTAssertNotEqual(tree.values(.Preorder), tree.values(.Postorder))
         XCTAssertNotEqual(tree.values( .Preorder), tree.values(.Inorder))
     }
-    
+
     func testPostOrder() {
         let expected: [Int] = [1,6,5,3,13,20,14,22,21,10]
         XCTAssertEqual(expected, tree.values(.Postorder))
         XCTAssertNotEqual(tree.values(.Postorder), tree.values(.Preorder))
         XCTAssertNotEqual(tree.values(.Postorder), tree.values(.Inorder))
     }
-    
+
     func testInOrder() {
         let expected: [Int] = [1,3,5,6,10,13,14,20,21,22]
         XCTAssertEqual(expected, tree.values(.Inorder))
@@ -223,54 +203,24 @@ class BinarySearchTreeTestCase: XCTestCase {
         XCTAssertNotEqual(expected, tree.values(.Postorder))
     }
     
-    ///
-    ///     Trinode Restructure Test (i.e balance)
-    ///
-    ///     Tree example on pg. 450, order of insertion is important
-    func testRestructure() {
-        let unbalanced_tree: BinarySearchTree<Int> = BinarySearchTree<Int>(44)
-        try! unbalanced_tree.put(17)
-        try! unbalanced_tree.put(78) // this node becomes left heavy
-        try! unbalanced_tree.put(32)
-        try! unbalanced_tree.put(50)
-        try! unbalanced_tree.put(88)
-        try! unbalanced_tree.put(48)
-        try! unbalanced_tree.put(62)
-        try! unbalanced_tree.put(54)
+    //The definition of balanced is: The heights of the two child subtrees of any node differ by at most one.
+    func testIsBalanced(){
+        let test_tree: BinarySearchTree<Int> = BinarySearchTree(44)
+        try! test_tree.put(17)
+        try! test_tree.put(78) // this node becomes left heavy
+        try! test_tree.put(32)
+        try! test_tree.put(50)
+        try! test_tree.put(88)
+        try! test_tree.put(48)
+        try! test_tree.put(62)
+        try! test_tree.put(54)
         
-        let x: Node<Int> = unbalanced_tree.get(62)!     // node to be restructured
-        let y: Node<Int> = unbalanced_tree.get(50)!     // parent
-        let z: Node<Int> = unbalanced_tree.get(78)!     // grandparent
+        let result: Bool = test_tree.isBalanced()
+        XCTAssertFalse(result)
         
-        // get references to children, before they change parents
-        // only t1 & t2 change parents
-        let t1: (Node<Int>?, Node<Int>?, Node<Int>?) = x.left != nil ? unbalanced_tree.family(parent: x.left! ) : (x.left ?? nil, nil, nil)
-        let t2 = x.right != nil ? unbalanced_tree.family(parent: x.right!) : (x.right ?? nil, nil, nil)
+        test_tree.balance()
+        XCTAssertTrue(test_tree.isBalanced())
         
-        // Check Preconditions before test runs
-        XCTAssertEqual(unbalanced_tree.root?.right, z)
-        XCTAssertEqual(z.left, y)
-        XCTAssertEqual(y.right, x)
-        
-        // Now test the method
-        let _ = unbalanced_tree.restructure(unbalanced_tree.get(62)!)
-        
-        // High Level Swaps :: verify
-        XCTAssertEqual(unbalanced_tree.root?.right, x)
-        XCTAssertEqual(x.left, y)
-        XCTAssertEqual(x.right, z)
-        
-        
-        // Low Level Swaps :: verify
-        
-        /// Make sure x's left children now belong to y's right
-        XCTAssertEqual(y.right, t1.0) // parent check
-        XCTAssertEqual(y.right?.left, t1.1) // left child check
-        XCTAssertEqual(y.right?.right, t1.2) // right child check
-        // Make sure x's right children now belong to z's left
-        XCTAssertEqual(z.left, t2.0)
-        XCTAssertEqual(z.left?.left, t2.1)
-        XCTAssertEqual(z.left?.right, t2.2)
-        
+       
     }
 }

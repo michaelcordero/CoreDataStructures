@@ -101,17 +101,27 @@ class Node<T: Comparable>: Equatable {
         return lhs.value! == rhs.value!
     }
     
-//    static func > (lhs: Node<T>, rhs: Node<T>) -> Bool{
-//        return lhs.value! > rhs.value!
-//    }
-//    
-//    static func < (lhs: Node<T>, rhs: Node<T>) -> Bool {
-//        return lhs.value! < rhs.value!
-//    }
+    static func > (lhs: Node<T>, rhs: Node<T>) -> Bool{
+        return lhs.value! > rhs.value!
+    }
+    
+    static func < (lhs: Node<T>, rhs: Node<T>) -> Bool {
+        return lhs.value! < rhs.value!
+    }
     
     // MARK: - Public API
     func isParent() -> Bool { return left != nil || right != nil }
     func isChild() -> Bool { return parent != nil }
     func isRoot() -> Bool { return parent == nil }
     func isLeaf() -> Bool { return left == nil && right == nil }
+}
+
+extension Node : CustomDebugStringConvertible {
+    var debugDescription: String {
+        var description: String = "Node[ Key:\(String(describing: self.value))"
+        description += "Left: \(String(describing: self.left)), "
+        description += "Right: \(String(describing: self.right)), "
+        description += " ]"
+        return description
+    }
 }
