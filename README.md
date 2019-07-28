@@ -7,7 +7,7 @@
 
 ## Overview
 
-CoreDataStructures is library of fundamental data structures written in Swift 4.2, therefore xcode 10.0+ is required to build this project.
+CoreDataStructures is library of fundamental data structures written in Swift 5, therefore xcode 10.0+ is required to build this project.
 Actual components can be found in CoreDataStructures/CoreDataStructures/Classes/ directory.
 
 ## Usage
@@ -44,7 +44,7 @@ To run the example project, clone the repo, and run `pod install` from the Examp
 ## Requirements
 
 * iOS 12.0
-* Swift 4.2
+* Swift 5
 
 ## Installation
 
