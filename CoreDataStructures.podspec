@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'CoreDataStructures'
-  s.version          = '0.1.2'
+  s.version          = '0.1.3'
   s.summary          = 'CoreDataStructures is library of fundamental data structures written in Swift 5'
 
 # This description is used to generate tags and improve search results.
