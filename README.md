@@ -40,7 +40,7 @@ class WelcomeViewController: UIViewController {
 
 ## Example
 
-To run the example project, clone the repo, and run `swift build` from the project directory.
+To run the example project, clone the repo, and run `swift build && swift test` from the project directory.
 
 ## Requirements
 
@@ -49,9 +49,7 @@ To run the example project, clone the repo, and run `swift build` from the proje
 
 ## Installation
 
-CoreDataStructures is available through [github](https://github.com/michaelcordero/CoreDataStructures). To install
-it, simply add the following line to your Podfile:
-
+CoreDataStructures is available through [github](https://github.com/michaelcordero/CoreDataStructures).
 ```
 git clone https://github.com/michaelcordero/CoreDataStructures
 ```
