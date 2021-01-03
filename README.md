@@ -1,7 +1,7 @@
 # CoreDataStructures
 
 [![CI Status](http://img.shields.io/travis/michaelcordero/CoreDataStructures.svg?style=flat)](https://travis-ci.org/michaelcordero/CoreDataStructures)
-[![Version](https://img.shields.io/github/v/release/michaelcordero/CoreDataStructures)](https://travis-ci.org/michaelcordero/CoreDataStructures)
+[![Version](https://img.shields.io/github/v/release/michaelcordero/CoreDataStructures)](https://github.com/michaelcordero/CoreDataStructures/releases)
 [![License](https://img.shields.io/github/license/michaelcordero/CoreDataStructures)](https://travis-ci.org/michaelcordero/CoreDataStructures)
 [![Platform](https://img.shields.io/cocoapods/p/CoreDataStructures)](https://travis-ci.org/michaelcordero/CoreDataStructures)
 
