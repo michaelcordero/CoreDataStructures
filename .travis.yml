@@ -1,11 +1,4 @@
-osx_image: xcode10.2
-xcode_sdk: iphonesimulator12.0
 language: objective-c
-cache: cocoapods
-podfile: Example/Podfile
-before_install:
-  - pod install --project-directory=Example
+xcode_sdk: iphonesimulator14.2
 script:
-  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/CoreDataStructures.xcworkspace -scheme CoreDataStructures-Example -destination 'platform=iOS Simulator,name=iPhone X,OS=12.0' ONLY_ACTIVE_ARCH=NO | xcpretty --color
-  - pod lib lint --allow-warnings
-
+  - set -o pipefail && xcodebuild test -enableCodeCoverage YES -scheme CoreDataStructures -destination 'platform=iOS Simulator,name=iPhone 12,OS=12.2' ONLY_ACTIVE_ARCH=NO | xcpretty --color
