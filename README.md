@@ -2,9 +2,9 @@
 
 [![CI Status](http://img.shields.io/travis/michaelcordero/CoreDataStructures.svg?style=flat)](https://travis-ci.org/michaelcordero/CoreDataStructures)
 
-<!-- [![Version](https://img.shields.io/cocoapods/v/CoreDataStructures.svg?style=flat)](http://cocoapods.org/pods/CoreDataStructures)
-[![License](https://img.shields.io/cocoapods/l/CoreDataStructures.svg?style=flat)](http://cocoapods.org/pods/CoreDataStructures)
-[![Platform](https://img.shields.io/cocoapods/p/CoreDataStructures.svg?style=flat)](http://cocoapods.org/pods/CoreDataStructures) -->
+[![Version](http://img.shields.io/travis/michaelcordero/CoreDataStructures.svg?style=flat)](https://travis-ci.org/michaelcordero/CoreDataStructures)
+[![License](http://img.shields.io/travis/michaelcordero/CoreDataStructures.svg?style=flat)](https://travis-ci.org/michaelcordero/CoreDataStructures)
+[![Platform](http://img.shields.io/travis/michaelcordero/CoreDataStructures.svg?style=flat)](https://travis-ci.org/michaelcordero/CoreDataStructures)
 
 ## Overview
 
