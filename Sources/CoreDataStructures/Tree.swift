@@ -41,20 +41,20 @@ protocol Tree {
  Custom error enum to notify users what went wrong.
  
  */
-enum TreeError: Error {
+public enum TreeError: Error {
     case DuplicateValueError
     case InvalidNodeError
     case NilRootError
 }
 
 /*OrderEnum*/
-enum TreeOrder {
+public enum TreeOrder {
     case Preorder
     case Postorder
     case Inorder
 }
 
-class Node<T: Comparable>: Equatable {
+open class Node<T: Comparable>: Equatable {
     var value: T?
     var left: Node<T>?
     var right: Node<T>?
@@ -89,7 +89,7 @@ class Node<T: Comparable>: Equatable {
     }
     
     // MARK: - Protocol Conformance
-    static func == (lhs: Node<T>, rhs: Node<T>) -> Bool {
+    public static func == (lhs: Node<T>, rhs: Node<T>) -> Bool {
        // return lhs.value == rhs.value && lhs.parent == rhs.parent && lhs.left == rhs.left && lhs.right == rhs.right
         if lhs.value == nil && rhs.value != nil {
             return false
@@ -115,7 +115,7 @@ class Node<T: Comparable>: Equatable {
 }
 
 extension Node : CustomDebugStringConvertible {
-    var debugDescription: String {
+    public var debugDescription: String {
         var description: String = "Node[ Key:\(String(describing: self.value))"
         description += "Left: \(String(describing: self.left)), "
         description += "Right: \(String(describing: self.right)), "
