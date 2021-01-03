@@ -1,6 +1,0 @@
-framework module CoreDataStructures {
-  umbrella header "CoreDataStructures-umbrella.h"
-
-  export *
-  module * { export * }
-}
