@@ -51,6 +51,8 @@ To run the example project, clone the repo, and run `swift build && swift test` 
 CoreDataStructures is available through [github](https://github.com/michaelcordero/CoreDataStructures).
 ```
 git clone https://github.com/michaelcordero/CoreDataStructures
+swift build 
+swift test
 ```
 
 ## Author
