@@ -31,8 +31,8 @@ xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM
-.plist
-.swiftpm
+*.plist
+*.swiftpm
 
 ## Playgrounds
 timeline.xctimeline
