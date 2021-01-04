@@ -126,14 +126,14 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
          - value: The value to be searched for.
      - Returns: Void
      */
-    private func insert(node: Node<T>, presentNode: Node<T>?) -> Void {
+    private func insert(node: Node<T>, presentNode: Node<T>?) throws -> Void {
         if node.value! < (presentNode?.value!)! {
             if(presentNode?.left == nil){
                 presentNode?.left = node
                 node.parent = presentNode
                 size += 1
             } else {
-                insert(node: node, presentNode: presentNode?.left)
+                try insert(node: node, presentNode: presentNode?.left)
             }
         } else if node.value! > (presentNode?.value!)! {
             if(presentNode?.right == nil) {
@@ -141,10 +141,47 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
                 node.parent = presentNode
                 size += 1
             } else {
-                insert(node: node, presentNode: presentNode?.right)
+                try insert(node: node, presentNode: presentNode?.right)
+            }
+        } else if node.value! == (presentNode?.value!)! {
+            throw TreeError.DuplicateValueError
+        }
+    }
+    
+    /**
+        Iterative implementation of BST insertion, slightly faster than recursion.
+        - Paramters:
+            - node: the node to be inserted into the BST
+        - Returns: Void
+     */
+    private func insert(node: Node<T>) throws -> Void {
+        var inserted: Bool = false
+        var itr: Node<T>? = self.root
+        while !inserted {
+            if node.value! < (itr?.value!)! {
+                if itr?.left == nil {
+                    itr?.left = node
+                    node.parent = itr
+                    size = 1
+                    inserted = true
+                } else {
+                    itr = itr?.left
+                }
+            } else if node.value! > (itr?.value!)! {
+                if(itr?.right == nil) {
+                    itr?.right = node
+                    node.parent = itr
+                    size = 1
+                    inserted = true
+                } else {
+                    itr = itr?.right
+                }
+            } else if node.value! == (itr?.value!)! {
+                throw TreeError.DuplicateValueError
             }
         }
     }
+
     
     /**
      Recursively searches the current BinarySearchTree node containing the highest comparable value.
@@ -338,9 +375,12 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     
     public func put(_ value: T) throws -> Void {
         if root == nil || root?.value == nil { root = Node(value: value); return }
-        if self.get(value) != nil {throw TreeError.DuplicateValueError}
         let node: Node<T> = Node(value: value)
-        insert(node: node, presentNode: root)
+        do {
+            try insert(node: node)
+        } catch {
+            throw TreeError.DuplicateValueError
+        }
     }
     
     public func remove(_ value: T) throws -> Node<T>? {
