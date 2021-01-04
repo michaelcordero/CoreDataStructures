@@ -164,7 +164,7 @@ open class LinkedList<T: Equatable> : List {
     }
     
     // MARK: - API
-    func size() -> Int {
+    public func size() -> Int {
         var count: Int = 0
         guard var current: Node<T> = head else { return count }
         while current.next != nil {
@@ -174,22 +174,22 @@ open class LinkedList<T: Equatable> : List {
         return count
     }
     
-    func add(_ element: T) -> Bool {
+    public func add(_ element: T) -> Bool {
         return linkLast( element )
     }
     
-    func remove(_ element: T) -> T? {
+    public func remove(_ element: T) -> T? {
         if let node: Node<T> = find( element ) {
             return unlink(node: node)
         }
         return nil
     }
     
-    func get(_ index: Int) -> T? {
+    public func get(_ index: Int) -> T? {
         return isValidIndex( index ) ? find( index ).value : nil
     }
     
-    func set(_ index: Int, value: T) -> T? {
+    public func set(_ index: Int, value: T) -> T? {
         if isValidIndex( index ) {
             let node: Node<T> = find( index )
             let old_value = node.value
@@ -200,7 +200,7 @@ open class LinkedList<T: Equatable> : List {
         }
     }
     
-    func all() -> [T?] {
+    public func all() -> [T?] {
         var allValues: [T?] = [T?]()
         var current: Node<T>? = head ?? nil
         if current == nil { return allValues }
@@ -211,20 +211,20 @@ open class LinkedList<T: Equatable> : List {
         return allValues
     }
     
-    func contains(_ element: T) -> Bool {
+    public func contains(_ element: T) -> Bool {
         return find( element ) != nil
     }
     
-    func indexOf(_ element: T) -> Int? {
+    public func indexOf(_ element: T) -> Int? {
         return Int(0)
     }
     
-    func clear() {
+    public func clear() {
         head = nil
         tail = nil
     }
     
-    func sort(comparator: (T, T) throws -> Bool) {
+    public func sort(comparator: (T, T) throws -> Bool) {
         // add to array
         var ar: Array<T> = Array()
         guard var current: Node<T> = head else {

@@ -74,12 +74,16 @@ class AVLTestCase: XCTestCase {
 //        print(avl.root.debugDescription)
     }
 
-//    func testPerformanceExample() {
-//        // This is an example of a performance test case.
-//        self.measure {
-//            // Put the code you want to measure the time of here.
-//        }
-//    }
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measure {
+            // Put the code you want to measure the time of here.
+            let avl: AVLTree<Int>  = AVLTree<Int>()
+            for i in 0...1000 {
+                try! avl.put(i)
+            }
+        }
+    }
 
 }
 

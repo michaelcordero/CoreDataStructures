@@ -16,10 +16,10 @@ import Foundation
 /// by Michael T Goodrich & Roberto Tamassia.
 /// Ch. 10, AVL Trees
 /// AVLTrees inherit size, isEmpty and get from BST, but overrides put & remove
-class AVLTree<T: Comparable> : BinarySearchTree<T> {
+open class AVLTree<T: Comparable> : BinarySearchTree<T> {
     
     /// Node Class adds height property
-     class AVLNode<T: Comparable> : Node<T> {
+     open class AVLNode<T: Comparable> : Node<T> {
         // MARK: - Properties
         var height: Int
         override init() {
@@ -51,48 +51,12 @@ class AVLTree<T: Comparable> : BinarySearchTree<T> {
         }
     }
     
-//    "The modification of a tree T caused by a "trinode restructuring operation is often called a
-//    rotation., because of the geometric way we can visualize it changes the tree."
-    
-    private func rightRotate(_ node: AVLNode<T>){
-        let x: AVLNode<T>? = node.left != nil ? AVLNode(node.left!) : nil
-        let y: AVLNode<T>? = x!.right != nil ? AVLNode(node.right!) : nil
-        
-        // perform the rotation
-        x!.right = node
-        node.left = y
-        
-        // update heights
-        node.height = Swift.max(height((node.left?.value!)!), height((node.right?.value!)!)) + 1
-        x?.height = Swift.max(height((x?.left?.value)!), height((x?.right?.value)!))
-        
-    }
-    
-    private func leftRotate(_ node: AVLNode<T>){
-        let x: AVLNode<T>? = node.right != nil ? AVLNode(node.right!) : nil
-        let y: AVLNode<T>? = x?.left != nil ? AVLNode((x?.left!)!) : nil
-        
-        // perform the rotation
-        x?.left = node
-        node.right = y
-        
-        // update the heights
-        let node_height_l = node.left != nil && node.left?.value != nil ? height((node.left?.value!)!) : 0
-        let node_height_r = node.right != nil && node.right?.value != nil ? height((node.right?.value)!) : 0
-        
-        let x_height_l = x?.left != nil  && x?.left?.value != nil ? height((x?.left?.value)!) : 0
-        let x_height_r = x?.right != nil && x?.right?.value != nil ? height((x?.right?.value)!) : 0
-        
-        node.height = Swift.max(node_height_l, node_height_r) + 1
-        y?.height = Swift.max(x_height_l, x_height_r) + 1
-    }
-    
-    override func put(_ value: T) throws {
+    override public func put(_ value: T) throws {
         try super.put(value)
         balance()
     }
     
-    override func remove(_ value: T) throws -> Node<T>? {
+    override public func remove(_ value: T) throws -> Node<T>? {
         let old_value: Node<T>? = try super.remove(value)
         balance()
         return old_value

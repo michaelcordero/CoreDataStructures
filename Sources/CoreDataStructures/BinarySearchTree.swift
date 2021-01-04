@@ -126,14 +126,14 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
          - value: The value to be searched for.
      - Returns: Void
      */
-    private func insert(node: Node<T>, presentNode: Node<T>?) -> Void {
+    private func insert(node: Node<T>, presentNode: Node<T>?) throws -> Void {
         if node.value! < (presentNode?.value!)! {
             if(presentNode?.left == nil){
                 presentNode?.left = node
                 node.parent = presentNode
                 size += 1
             } else {
-                insert(node: node, presentNode: presentNode?.left)
+                try insert(node: node, presentNode: presentNode?.left)
             }
         } else if node.value! > (presentNode?.value!)! {
             if(presentNode?.right == nil) {
@@ -141,10 +141,47 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
                 node.parent = presentNode
                 size += 1
             } else {
-                insert(node: node, presentNode: presentNode?.right)
+                try insert(node: node, presentNode: presentNode?.right)
+            }
+        } else if node.value! == (presentNode?.value!)! {
+            throw TreeError.DuplicateValueError
+        }
+    }
+    
+    /**
+        Iterative implementation of BST insertion, slightly faster than recursion.
+        - Paramters:
+            - node: the node to be inserted into the BST
+        - Returns: Void
+     */
+    private func insert(node: Node<T>) throws -> Void {
+        var inserted: Bool = false
+        var itr: Node<T>? = self.root
+        while !inserted {
+            if node.value! < (itr?.value!)! {
+                if itr?.left == nil {
+                    itr?.left = node
+                    node.parent = itr
+                    size = 1
+                    inserted = true
+                } else {
+                    itr = itr?.left
+                }
+            } else if node.value! > (itr?.value!)! {
+                if(itr?.right == nil) {
+                    itr?.right = node
+                    node.parent = itr
+                    size = 1
+                    inserted = true
+                } else {
+                    itr = itr?.right
+                }
+            } else if node.value! == (itr?.value!)! {
+                throw TreeError.DuplicateValueError
             }
         }
     }
+
     
     /**
      Recursively searches the current BinarySearchTree node containing the highest comparable value.
@@ -311,23 +348,23 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
     }
     
     // MARK: - Public API
-    func family(parent: Node<T>?) -> (parent: Node<T>?, left: Node<T>?, right: Node<T>?) {
+    public func family(parent: Node<T>?) -> (parent: Node<T>?, left: Node<T>?, right: Node<T>?) {
         return (parent!, parent!.left, parent!.right)
     }
-    func children(parent: Node<T>) -> (left: Node<T>?, right: Node<T>?) {
+    public func children(parent: Node<T>) -> (left: Node<T>?, right: Node<T>?) {
         return ( parent.left, parent.right )
     }
     
-    func sibling(node: Node<T>) -> Node<T>? {
+    public func sibling(node: Node<T>) -> Node<T>? {
         guard let parent: Node<T> = self.get(node.value!)?.parent else { return nil }
         return node == parent.left ? parent.right : parent.left
     }
     
-    func get(_ value: T) -> Node<T>? {
+    public func get(_ value: T) -> Node<T>? {
         return search(indexNode: root, value: value)
     }
     
-    func set(_ node: Node<T>, value: T) throws -> T? {
+    public func set(_ node: Node<T>, value: T) throws -> T? {
         if let _: T = self.get(value)?.value { throw TreeError.DuplicateValueError }
         guard let operand: Node<T> = self.get( node.value! ) else { return nil }
         let previous_value: T? = operand.value
@@ -336,31 +373,34 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         
     }
     
-    func put(_ value: T) throws -> Void {
+    public func put(_ value: T) throws -> Void {
         if root == nil || root?.value == nil { root = Node(value: value); return }
-        if self.get(value) != nil {throw TreeError.DuplicateValueError}
         let node: Node<T> = Node(value: value)
-        insert(node: node, presentNode: root)
+        do {
+            try insert(node: node)
+        } catch {
+            throw TreeError.DuplicateValueError
+        }
     }
     
-    func remove(_ value: T) throws -> Node<T>? {
+    public func remove(_ value: T) throws -> Node<T>? {
         guard let node: Node<T> = delete(indexNode: root, value: value) else {
             throw TreeError.InvalidNodeError
         }
         return node
     }
     
-    func isEmpty() -> Bool {
+    public func isEmpty() -> Bool {
         return size == 0
     }
     
-    func all() -> [Node<T>] {
+    public func all() -> [Node<T>] {
         var result: [Node<T>] = []
         preorder(operation: {result.append($0)})
         return result
     }
     
-    func values() -> [T] {
+    public func values() -> [T] {
         if root == nil {
             return [T]()
         }
@@ -372,7 +412,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         return result
     }
     
-    func all(_ order: TreeOrder) -> [Node<T>] {
+    public func all(_ order: TreeOrder) -> [Node<T>] {
         var result: [Node<T>] = []
         switch order {
         case .Preorder: preorder(operation: {result.append($0)})
@@ -382,7 +422,7 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         return result
     }
     
-    func values(_ order: TreeOrder) -> [T] {
+    public func values(_ order: TreeOrder) -> [T] {
         var result: [T] = []
         switch order {
         case .Preorder: preorder(operation: {
@@ -401,36 +441,36 @@ open class BinarySearchTree<T: Comparable> : BinaryTree {
         return result
     }
     
-    func contains(_ value: T) -> Bool {
+    public func contains(_ value: T) -> Bool {
         return self.get(value) != nil
     }
     
-    func depth(_ value: T) -> Int {
+    public func depth(_ value: T) -> Int {
         var edges: Int = 0
         return depth(self.get(value), &edges )
     }
     
-    func height(_ value: T) -> Int {
+    public func height(_ value: T) -> Int {
         return self.height( self.get(value) )
     }
     
-    func preorder( operation: (Node<T>) -> Void ) {
+    public func preorder( operation: (Node<T>) -> Void ) {
         preorder(root!, operation: operation)
     }
     
-    func postorder( operation: (Node<T>) -> Void ) {
+    public func postorder( operation: (Node<T>) -> Void ) {
         postorder(root!, operation: operation)
     }
     
-    func inorder( operation: (Node<T>) -> Void ) {
+    public func inorder( operation: (Node<T>) -> Void ) {
         inorder(root!, operation: operation)
     }
     
-    func balance() -> Void {
+    public func balance() -> Void {
         internalBalance()
     }
     
-    func isBalanced() -> Bool {
+    public func isBalanced() -> Bool {
         return isInternalBalanced(self.root!)
     }
    

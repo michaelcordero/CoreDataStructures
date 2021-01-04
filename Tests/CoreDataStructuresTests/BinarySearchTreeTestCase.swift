@@ -219,8 +219,30 @@ class BinarySearchTreeTestCase: XCTestCase {
         
         test_tree.balance()
         XCTAssertTrue(test_tree.isBalanced())
-        
-       
+    }
+    
+    func testAddDuplicateValues() {
+        let bst: BinarySearchTree<Int>  = BinarySearchTree<Int>()
+        try! bst.put(0)
+        try! bst.put(1)
+        XCTAssertThrowsError(try bst.put(1))
+        try! bst.put(2)
+        try! bst.put(3)
+        XCTAssertThrowsError(try bst.put(3))
+    }
+    
+    func testPerformanceExample() {
+        // This is an example of a performance test case.
+        self.measure {
+            // Put the code you want to measure the time of here.
+            let bst: BinarySearchTree<Int>  = BinarySearchTree<Int>()
+            for i in 0...10_000 {
+                if i != 0 && i % 100 == 0 {
+                    bst.balance()
+                }
+                try! bst.put(i)
+            }
+        }
     }
 }
 
