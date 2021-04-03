@@ -244,5 +244,50 @@ class BinarySearchTreeTestCase: XCTestCase {
             }
         }
     }
+    
+    func createIntBinarySearchTree() -> BinarySearchTree<Int> {
+        let bst: BinarySearchTree<Int> = BinarySearchTree<Int>()
+        for i in 0...1000 {
+            if i != 0 && i % 50 == 0 {
+                bst.balance()
+            }
+            print("Running int tree...")
+            try! bst.put(i)
+        }
+        return bst
+    }
+    
+    func createStringBinarySearchTree() -> BinarySearchTree<String> {
+        let bst: BinarySearchTree<String> = BinarySearchTree<String>()
+        for i in 0...1000 {
+            if i != 0 && i % 100 == 0 {
+                bst.balance()
+            }
+            print("Running string tree...")
+            try! bst.put("\(i)")
+        }
+        return bst
+    }
+    
+    func testThreading() {
+        let dg = DispatchGroup()
+        let dq = DispatchQueue.init(label: "concurrent_tree_queue", qos: .background, attributes: .concurrent, autoreleaseFrequency: .workItem, target: .none)
+//        let dq = DispatchQueue.init(label: "serial_tree_queue")
+        var int_tree: BinarySearchTree<Int> = BinarySearchTree<Int>()
+        var string_tree: BinarySearchTree<String> = BinarySearchTree<String>()
+        dq.async(group: dg, execute: { [self] () -> Void in
+            int_tree = createIntBinarySearchTree()
+            int_tree.balance()
+        })
+        dq.async(group: dg, execute: { [self] in
+            string_tree = createStringBinarySearchTree()
+            string_tree.balance()
+        })
+        dg.notify(qos: .background, flags: .assignCurrentContext, queue: dq, execute: {
+            print("Both trees finished!")
+        })
+        dg.wait()
+    
+    }
 }
 
